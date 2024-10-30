@@ -1,7 +1,7 @@
 List of Features:
 
-Login/Logout
-Add Expenses
+Add Daily Expenses
+Expense Categories
 Manage Expenses
 Expense Report
 Savings Goal
