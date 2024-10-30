@@ -14,3 +14,6 @@ The **Expense Management System** is a comprehensive web application designed to
 - **User Profile**: Maintain user profiles to personalize the experience and ensure data security.
 
 ## Figma Link
+
+For a detailed design reference, visit the Figma link:
+https://www.figma.com/design/L4uDYIFR1yBzsUg5Ng0PSE/StudentSaver?node-id=0-1&t=M2AC0QCa9HRLMtQ1-1
