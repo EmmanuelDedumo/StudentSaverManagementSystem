@@ -1,8 +1,8 @@
-# Expense Management System
+# Student Daily Expense Management System
 
 ## Project Overview
 
-The **Expense Management System** is a comprehensive web application designed to help users manage their daily expenses effectively. It provides a user-friendly interface for tracking spending, categorizing expenses, and setting savings goals. This system aims to empower users to take control of their finances by providing insights into their spending habits and enabling better financial planning.
+The **Student Daily Expense Management System** is a comprehensive web application designed to help users manage their daily expenses effectively. It provides a user-friendly interface for tracking spending, categorizing expenses, and setting savings goals. This system aims to empower users to take control of their finances by providing insights into their spending habits and enabling better financial planning.
 
 ## Key Features
 
