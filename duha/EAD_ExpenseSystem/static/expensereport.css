@@ -1,0 +1,105 @@
+/* Base styles for the sidebar */
+body {
+    font-family: Poppins, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+/* Sidebar styles */
+.sidebar {
+    width: 220px;
+    background-color: #ffffff;
+    position: fixed;
+    height: 100%;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    overflow-y: auto;
+}
+
+.profile-section {
+    text-align: center;
+}
+
+.profile-section img {
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
+    display: block;
+    margin: 0 auto;
+}
+
+.management-section,
+.settings-section {
+    margin-top: 50px;
+}
+
+.management-section h3,
+.settings-section h3 {
+    margin-bottom: 10px;
+}
+
+.management-section ul, .settings-section ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.management-section li, .settings-section li {
+    display: flex;
+    align-items: center;
+    margin: 5px 0;
+}
+
+.sidebar-icon {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+}
+
+.management-section li a,
+.settings-section li a {
+    text-decoration: none;
+    color: #333;
+    padding: 8px;
+    display: block;
+}
+
+.management-section li.active a {
+    font-weight: bold;
+    color: #4CAF50;
+}
+
+.main-dashboard {
+    margin-left: 240px;
+    padding: 20px;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+td {
+    border-right: 1px solid #ccc;
+}
+
+th:last-child, td:last-child {
+    border-right: none;
+}
