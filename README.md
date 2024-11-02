@@ -17,3 +17,10 @@ The **Student Daily Expense Management System** is a comprehensive web applicati
 
 For a detailed design reference, visit the Figma link:
 https://www.figma.com/design/L4uDYIFR1yBzsUg5Ng0PSE/StudentSaver?node-id=0-1&t=M2AC0QCa9HRLMtQ1-1
+
+## ERD Link
+
+For a detailed ERD reference, visit this link:
+https://online.visual-paradigm.com/share.jsp?id=333236303538362d3131
+
+
