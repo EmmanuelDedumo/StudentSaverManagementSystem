@@ -57,23 +57,27 @@ a:active {
 .action-button {
     display: flex;
     flex-direction: column; /* Stack icon and text vertically */
-    align-items: center;
+    justify-content: center; /* Center content vertically */
+    align-items: center; /* Center content horizontally */
     background-color: #ffffff;
-    padding: 20px;
-    border-radius: 10px;
+    padding: 10px 20px; /* Adjust vertical padding (top and bottom) */
+    border-radius: 20px;
     box-shadow: 0 4px 6px rgba(0,0,0,0.1);
     width: 120px;
     text-align: center;
+    height: 150px; /* Ensure consistent button height */
 }
+
 
 .action-button img {
     width: 50px;
     height: 50px;
+    margin: 0 auto; /* Center horizontally if needed */
 }
 
 .action-button p {
     font-weight: bold;
-    margin-top: 10px;
+    margin-top: 10px; /* Add spacing between image and text */
 }
 
 .action-button:hover {
