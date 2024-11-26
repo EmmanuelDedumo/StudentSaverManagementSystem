@@ -9,33 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="sidebar">
-        <div class="profile-section">
-            <!-- Display profile image dynamically or a default image -->
-            <img src="{% static 'huh.jpg' %}" alt="Profile Picture" />
-            <h3>{{ user.username }}</h3>   <!-- Display user's first and last name -->
-            <p>{{ user.email }}</p>  <!-- Display email dynamically -->
-        </div>
-    
-        <div class="management-section">
-            <h3>Management</h3>
-            <ul>
-                <li><img src="{% static 'dashboard.png' %}" alt="Dashboard Icon" class="sidebar-icon"> <a href="{% url 'dashboard' %}">Dashboard</a></li>
-                <li><img src="{% static 'expenses.png' %}" alt="Add Expenses Icon" class="sidebar-icon"> <a href="{% url 'add_expense' %}">Expenses</a></li>
-                <li><img src="{% static 'add_report.png' %}" alt="Expense Report Icon" class="sidebar-icon"> <a href="#">Expense Report</a></li>
-                <li><img src="{% static 'add_savings.png' %}" alt="Savings Icon" class="sidebar-icon"> <a href="#">Savings</a></li>
-            </ul>
-        </div>
-    
-        <div class="settings-section">
-            <h3>Settings</h3>
-            <ul>
-                <li><img src="{% static 'user.png' %}" alt="Profile Icon" class="sidebar-icon"> <a href="#">Profile</a></li>
-                <li><img src="{% static 'exit.png' %}" alt="Logout Icon" class="sidebar-icon"> <a href="{% url 'logout' %}" class="btn btn-secondary">Logout</a></li>
-            </ul>
-        </div>
-    </div>
-    
+    {% include 'sidebar.html' %}
 
     <div class="main-dashboard">
         <div class="header">
