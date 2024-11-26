@@ -1,0 +1,80 @@
+/* Base styles for the sidebar */
+body {
+    font-family: Poppins, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+
+/* Main dashboard styles */
+.main-dashboard {
+    margin-left: 270px; /* Ensure space for sidebar */
+    padding: 20px;
+    background-color: #f4f4f4; /* Adjust to desired background */
+    min-height: 100vh;
+}
+
+.header h1 {
+    font-size: 2em;
+    margin-bottom: 20px;
+}
+
+/* Form container styles */
+.form-container {
+    background-color: white; /* Background for the form */
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 500;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #bdc3c7;
+    border-radius: 4px;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    border-color: #3498db; /* Focus color */
+    outline: none;
+}
+
+.btn {
+    display: inline-block;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.btn-primary {
+    background-color: #3498db; /* Primary button color */
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: #2980b9; /* Darker shade on hover */
+}
+
+.alert {
+    background-color: #4CAF50; /* Green background */
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    font-weight: bold;
+    text-align: center;
+}

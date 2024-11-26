@@ -1,0 +1,149 @@
+/* Base styles for the sidebar */
+body {
+    font-family: Poppins, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+/* Main dashboard styles */
+.main-dashboard {
+    margin-left: 240px; /* Adjusted to avoid overlap with sidebar */
+    padding: 20px;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between; /* Space between title and button */
+    align-items: center; /* Center items vertically */
+    margin-bottom: 20px;
+}
+
+.header h1 {
+    font-size: 2em;
+    margin-left: 20px; /* Adjust this value to shift the heading to the right */
+}
+
+.expense-list h2 {
+    margin-left: 20px; /* Adjust this value to shift the heading to the right */
+}
+
+/* Table styles */
+table {
+    width: 100%;
+    border-collapse: collapse; /* Remove double borders */
+}
+
+th, td {
+    padding: 10px;
+    padding-left: 100px; /* Add left padding for more space */
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+th {
+    background-color: #f2f2f2;
+    border-right: 1px solid #ccc;
+}
+
+td {
+    border-right: 1px solid #ccc;
+}
+
+th:last-child, td:last-child {
+    border-right: none;
+}
+
+/* Button styles */
+.btn-edit {
+    border: 2px solid blue; /* Blue border for edit button */
+    background-color: white;
+    color: blue;
+    padding: 10px 15px;
+    text-decoration: none;
+    border-radius: 5px;
+    cursor: pointer;
+    display: inline-block; /* Make sure it behaves like a block */
+}
+
+.btn-delete {
+    border: 2px solid red; /* Red border for delete button */
+    background-color: white;
+    color: red;
+    padding: 10px 15px;
+    text-decoration: none;
+    border-radius: 5px;
+    cursor: pointer;
+    display: inline-block; /* Make sure it behaves like a block */
+}
+
+.btn-delete:hover {
+    background-color: red;
+    color: white;
+}
+
+.btn-edit:hover {
+    background-color: blue;
+    color: white;
+}
+
+/* Modal styles */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1000; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgba(0, 0, 0, 0.5); /* Black with opacity */
+}
+
+/* Modal Content */
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+}
+
+/* Close button */
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Responsive styles */
+@media screen and (max-width: 768px) {
+    .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+        box-shadow: none;
+    }
+
+    .main-dashboard {
+        margin-left: 0;
+    }
+
+    .profile-section img {
+        width: 100px; /* Smaller profile image on smaller screens */
+        height: 100px;
+    }
+
+    .sidebar-icon {
+        width: 18px;
+        height: 18px;
+    }
+}

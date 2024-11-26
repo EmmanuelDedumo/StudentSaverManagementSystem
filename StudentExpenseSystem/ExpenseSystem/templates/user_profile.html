@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'userprofile.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Sidebar inclusion -->
+    {% include 'sidebar.html' %}
+
+    <!-- Profile container with a left margin to avoid overlap with the sidebar -->
+    <div class="profile-container">
+        <div class="profile-header">
+            <h1>User Profile</h1>
+        </div>
+
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="profile-info">
+                <div class="profile-picture">
+                    <img src="{% static 'profile_picture.jpg' %}" alt="User Profile Picture">
+                    <!-- Optional: Profile picture change -->
+                    <input type="file" name="profile_picture" id="profile_picture" accept="image/*">
+                </div>
+                
+                <div class="profile-details">
+                    <label for="first_name">First Name:</label>
+                    <input type="text" name="first_name" id="first_name" value="{{ user.first_name }}" required>
+
+                    <label for="last_name">Last Name:</label>
+                    <input type="text" name="last_name" id="last_name" value="{{ user.last_name }}" required>
+
+                    <label for="email">Email Address:</label>
+                    <input type="email" name="email" id="email" value="{{ user.email }}" required>
+                </div>
+            </div>
+
+            <div class="profile-actions">
+                <button type="submit" class="edit-profile-btn">Save Changes</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
