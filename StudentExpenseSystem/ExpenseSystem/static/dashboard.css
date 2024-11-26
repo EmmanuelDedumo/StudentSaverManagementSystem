@@ -162,3 +162,10 @@ canvas {
 .profile-dropdown:hover .dropdown-content {
     display: block;  /* Show the dropdown when hovering over the profile icon */
 }
+
+.profile-line {
+    width: 100%; /* Full width */
+    height: 2px; /* Line thickness */
+    background-color: #ccc; /* Line color */
+    margin-top: 5px; /* Adjust space between dropdown and the line */
+}
