@@ -1,0 +1,43 @@
+{% load static %}
+<div class="sidebar">
+    <div class="profile-section">
+        <link rel="stylesheet" href="{% static 'sidebar.css' %}">
+        <img src="{% static 'huh.jpg' %}" alt="Profile Picture" />
+        <h3>{{ user.username }}</h3>
+        <p>{{ user.email }}</p>
+    </div>
+
+    <div class="management-section">
+        <h3>Management</h3>
+        <ul>
+            <li class="{% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}">
+                <img src="{% static 'dashboard.png' %}" alt="Dashboard Icon" class="sidebar-icon">
+                <a href="{% url 'dashboard' %}">Dashboard</a>
+            </li>
+            <li class="{% if request.resolver_match.url_name == 'add_expense' %}active{% endif %}">
+                <img src="{% static 'expenses.png' %}" alt="Add Expenses Icon" class="sidebar-icon">
+                <a href="{% url 'add_expense' %}">Expenses</a>
+            </li>
+            <li class="{% if request.resolver_match.url_name == 'expense_report' %}active{% endif %}">
+                <img src="{% static 'add_report.png' %}" alt="Expense Report Icon" class="sidebar-icon">
+                <a href="{% url 'expense_report' %}">Expense Report</a>
+            </li>
+            <li class="{% if request.resolver_match.url_name == 'savings' %}active{% endif %}">
+                <img src="{% static 'add_savings.png' %}" alt="Savings Icon" class="sidebar-icon">
+                <a href="#">Savings</a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="settings-section">
+        <h3>Settings</h3>
+        <ul>
+            <li class="{% if request.resolver_match.url_name == 'user_profile' %}active{% endif %}">
+                <img src="{% static 'user.png' %}" alt="User Icon" class="sidebar-icon">
+                <a href="{% url 'user_profile' %}">Profile</a>
+            </li>
+            <li><img src="{% static 'exit.png' %}" alt="Logout Icon" class="sidebar-icon"> 
+                <a href="{% url 'logout' %}" class="btn btn-secondary">Logout</a></li>
+        </ul>
+    </div>
+</div>

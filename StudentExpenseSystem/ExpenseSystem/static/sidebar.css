@@ -1,0 +1,75 @@
+/* Sidebar */
+.sidebar {
+    width: 220px;
+    background-color: #ffffff; /* White background */
+    position: fixed;
+    height: 100%; /* Full height of the page */
+    box-shadow: 2px 0 5px rgba(0,0,0,0.1); /* Subtle shadow */
+    padding: 20px;
+    overflow: hidden; /* Prevent scrolling */
+}
+
+/* Profile Section */
+.profile-section {
+    text-align: center;
+}
+
+.profile-section img {
+    border-radius: 50%; /* Circle shape */
+    width: 120px; /* Adjust size as needed */
+    height: 120px; /* Adjust size as needed */
+    display: block; /* Center the image */
+    margin: 0 auto; /* Center the image horizontally */
+}
+
+/* Management and Settings Sections */
+.management-section,
+.settings-section {
+    margin-top: 50px;
+}
+
+.management-section h3,
+.settings-section h3 {
+    margin-bottom: 10px;
+}
+
+.management-section ul, .settings-section ul {
+    list-style-type: none; /* Remove bullet points */
+    padding: 0; /* Remove padding */
+}
+
+.management-section li, .settings-section li {
+    display: flex; /* Use flexbox for alignment */
+    align-items: center; /* Center items vertically */
+    margin: 5px 0; /* Space between list items */
+}
+
+.sidebar-icon {
+    width: 20px; /* Adjust width as needed */
+    height: 20px; /* Adjust height as needed */
+    margin-right: 15px; /* Space between icon and text */
+    margin-top: 5px; /* Space above the icon */
+    margin-bottom: 5px; /* Space below the icon */
+    vertical-align: middle; /* Align icon with text */
+}
+
+.management-section li a,
+.settings-section li a {
+    text-decoration: none;
+    color: #333;
+    padding: 8px; /* Adding padding for touch targets */
+    display: block; /* Makes the entire list item clickable */
+}
+
+.management-section li.active a, 
+.settings-section li.active a {
+    font-weight: bold;
+    color: #628CF8; /* Active link color */
+}
+
+/* Hover effect for sidebar items */
+.management-section li a:hover,
+.settings-section li a:hover {
+    background-color: #f5f5f5; /* Light gray on hover */
+    color: #000; /* Dark text on hover */
+}

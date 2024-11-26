@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expense Report</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'expensereport.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    {% include 'sidebar.html' %}
+
+    <div class="main-dashboard">
+        <div class="header">
+            <h1>Expense Report</h1>
+        </div>
+
+        <div class="report-filters">
+            <form method="GET" action="{% url 'expense_report' %}">
+                <select name="filter" onchange="this.form.submit()">
+                    <option value="weekly" {% if filter == 'weekly' %}selected{% endif %}>This Week</option>
+                    <option value="monthly" {% if filter == 'monthly' %}selected{% endif %}>This Month</option>
+                    <option value="yearly" {% if filter == 'yearly' %}selected{% endif %}>This Year</option>
+                    <option value="today" {% if filter == 'today' %}selected{% endif %}>Today</option>
+                </select>
+            </form>
+        </div>
+
+        <div class="expense-list background-box">
+            <h2>Your Expenses for {{ filter }}</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Amount</th>
+                        <th>Date</th>
+                        <th>Category</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for expense in expenses %}
+                    <tr>
+                        <td>{{ expense.amount }}</td>
+                        <td>{{ expense.date }}</td>
+                        <td>{{ expense.category.name }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="3">No expenses found for this period.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

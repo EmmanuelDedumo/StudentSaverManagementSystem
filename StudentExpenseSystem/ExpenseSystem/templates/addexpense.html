@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Expense</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <link rel="stylesheet" href="{% static 'addexpense.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    {% include 'sidebar.html' %}
+
+    <div class="main-dashboard">
+        <div class="header">
+            <h1>Add Your Daily Expense</h1>
+        </div>
+
+      <!-- Display success message if expense was successfully added -->
+      {% if messages %}
+      <div class="messages">
+          {% for message in messages %}
+              <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+          {% endfor %}
+      </div>
+      {% endif %}
+
+
+        <div class="form-container background-box">
+            <form method="POST" action="{% url 'add_expense' %}">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="amount">Enter Amount:</label>
+                    <input type="number" id="amount" name="amount" required>
+                </div>
+                <div class="form-group">
+                    <label for="date">Date:</label>
+                    <input type="date" id="date" name="date" required>
+                </div>
+                <div class="form-group">
+                    <label for="category">Category:</label>
+                    <select id="category" name="category" required>
+                        <option value="">Select a category</option>
+                        <option value="Food">Food</option>
+                        <option value="Education">Education</option>
+                        <option value="Health">Health</option>
+                        <option value="Rent">Rent</option>
+                        <option value="Transport">Transport</option>
+                        <option value="Entertainment">Entertainment</option>
+                        <option value="Other">Other</option>
+                    </select>                    
+                </div>
+                <button type="submit" class="btn btn-primary">Add Expense</button>
+            </form>
+            
+            
+        </div> <!-- End of form-container -->
+        <div class="manage-expense-btn">
+            <a href="{% url 'manage_expense' %}" class="btn btn-secondary">Manage Expenses</a>
+        </div>
+    </div>
+    <script>
+        document.getElementById('expenseForm').addEventListener('submit', function(event) {
+            event.preventDefault();  // Prevent normal form submission
+    
+            var formData = new FormData(this);
+    
+            fetch("{% url 'add_expense' %}", {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Expense added successfully!');
+                    updateChartData();  // Call the function to update the chart with new data
+                } else {
+                    alert('Error adding expense');
+                }
+            })
+            .catch(error => console.error('Error adding expense:', error));
+        });
+    </script>
+    
+    
+</body>
+</html>
