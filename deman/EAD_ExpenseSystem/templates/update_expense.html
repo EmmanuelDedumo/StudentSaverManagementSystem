@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Update Expense</title>
+</head>
+<body>
+    <h1>Update Expense</h1>
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Update Expense</button>
+    </form>
+    <a href="{% url 'list_expenses' %}">Cancel</a>
+</body>
+</html>

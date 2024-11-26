@@ -1,0 +1,181 @@
+/* Base styles for the sidebar */
+body {
+    font-family: Poppins, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 220px;
+    background-color: #ffffff;
+    position: fixed;
+    height: 100%;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    overflow-y: auto; /* Scroll if content is too long */
+}
+
+.profile-section {
+    text-align: center; /* Center text and elements */
+}
+
+.profile-section img {
+    border-radius: 50%; /* Circle shape */
+    width: 120px; /* Adjust size as needed */
+    height: 120px; /* Adjust size as needed */
+    display: block; /* Center the image */
+    margin: 0 auto; /* Center the image horizontally */
+}
+
+.management-section,
+.settings-section {
+    margin-top: 50px;
+}
+
+.management-section h3,
+.settings-section h3 {
+    margin-bottom: 10px;
+}
+
+/* Adjusted margins for management and settings items */
+.management-section ul,
+.settings-section ul {
+    list-style-type: none; /* Remove bullet points */
+    padding: 0; /* Remove padding */
+}
+
+.management-section li,
+.settings-section li {
+    display: flex; /* Use flexbox for alignment */
+    align-items: center; /* Center items vertically */
+    margin: 5px 0; /* Space between list items */
+}
+
+.sidebar-icon {
+    width: 20px; /* Adjust width as needed */
+    height: 20px; /* Adjust height as needed */
+    margin-right: 10px; /* Space between icon and text */
+    vertical-align: middle; /* Align icon with text */
+}
+
+.management-section li a,
+.settings-section li a {
+    text-decoration: none;
+    color: #333;
+    padding: 8px; /* Adding padding for touch targets */
+    display: block; /* Makes the entire list item clickable */
+}
+
+.management-section li.active a {
+    font-weight: bold;
+    color: #4CAF50; /* Active link color */
+}
+
+/* Main dashboard styles */
+.main-dashboard {
+    margin-left: 240px; /* Adjusted to avoid overlap with sidebar */
+    padding: 20px;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between; /* Space between title and button */
+    align-items: center; /* Center items vertically */
+    margin-bottom: 20px;
+}
+
+/* Table styles */
+table {
+    width: 100%;
+    border-collapse: collapse; /* Remove double borders */
+}
+
+th, td {
+    padding: 10px;
+    padding-left: 100px; /* Add left padding for more space */
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+th {
+    background-color: #f2f2f2;
+    border-right: 1px solid #ccc;
+}
+
+td {
+    border-right: 1px solid #ccc;
+}
+
+th:last-child, td:last-child {
+    border-right: none;
+}
+
+/* Button styles */
+.btn-edit {
+    border: 2px solid blue; /* Blue border for edit button */
+    background-color: white;
+    color: blue;
+    padding: 10px 15px;
+    text-decoration: none;
+    border-radius: 5px;
+    cursor: pointer;
+    display: inline-block; /* Make sure it behaves like a block */
+}
+
+.btn-delete {
+    border: 2px solid red; /* Red border for delete button */
+    background-color: white;
+    color: red;
+    padding: 10px 15px;
+    text-decoration: none;
+    border-radius: 5px;
+    cursor: pointer;
+    display: inline-block; /* Make sure it behaves like a block */
+}
+
+.btn-delete:hover {
+    background-color: red;
+    color: white;
+}
+
+.btn-edit:hover {
+    background-color: blue;
+    color: white;
+}
+
+/* Modal styles */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1000; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgba(0, 0, 0, 0.5); /* Black w/ opacity */
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto; /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; /* Could be more or less, depending on screen size */
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}   

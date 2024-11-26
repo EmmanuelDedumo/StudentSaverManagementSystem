@@ -1,0 +1,158 @@
+/* Resetting default browser styles */
+* {
+    box-sizing: border-box; /* Ensures consistent sizing */
+    margin: 0;
+    padding: 0;
+}
+
+body, html {
+    background-color: #f8f9fa;
+    font-family: 'Poppins', sans-serif;
+    height: 100vh; /* Full viewport height */
+    overflow: hidden; /* Prevents scrolling */
+}
+
+/* Centering the login page content */
+.login-page {
+    display: flex;
+    height: 100vh; /* Full viewport height */
+}
+
+/* Left blue side for the image and text */
+.blue-side {
+    display: flex;
+    flex-direction: column; /* Stack items vertically */
+    justify-content: center; /* Center items vertically */
+    align-items: center; /* Center items horizontally */
+    background-color: #628CF8;
+    width: 50%;
+}
+
+/* Responsive image styling */
+.blue-side img.side-image {
+    width: 100%; /* Make the image responsive */
+    height: auto; /* Maintain aspect ratio */
+    display: block; /* Ensures there's no space below the image */
+}
+
+/* Text styling for expense tracking */
+.expense-tracking-text {
+    color: white;
+    font-size: 25px;
+    text-align: center;
+    margin-top: 50px;
+}
+
+/* Container for the form */
+.form-container {
+    display: flex;
+    flex-direction: column; /* Stack form elements vertically */
+    justify-content: center; /* Center vertically */
+    align-items: center; /* Center horizontally */
+    width: 50%;
+    padding: 40px;
+}
+
+/* Welcome title styling */
+.welcome-title {
+    font-size: 50px;
+    font-weight: bold;
+    text-align: center;
+}
+
+/* Instruction text styling */
+.login-instruction {
+    color: #628CF8;
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 18px;
+}
+
+/* Form group styling */
+.form-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+    width: 100%; /* Full width for form groups */
+}
+
+/* Label styling */
+label {
+    text-align: left;
+    margin-bottom: 5px;
+    font-weight: bold;
+    width: 100%; /* Ensure the label takes full width */
+}
+
+/* Input field styling */
+input[type="text"],
+input[type="password"] {
+    width: 100%; /* Full width */
+    max-width: 400px; /* Maximum width */
+    height: 50px; /* Fixed height */
+    font-size: 16px; /* Font size */
+    padding: 10px; /* Inner padding */
+    border: 1px solid #ced4da; /* Border styling */
+    border-radius: 5px; /* Rounded corners */
+}
+
+/* Focus styling for input fields */
+input[type="text"]:focus,
+input[type="password"]:focus {
+    border-color: green; /* Focus border color */
+    outline: none; /* Remove default outline */
+}
+
+/* Button styling */
+.btn-primary {
+    background-color: #2C2C2C; /* Background color */
+    border: none; /* No border */
+    border-radius: 10px; /* Rounded corners */
+    padding: 10px 20px; /* Padding */
+    font-size: 16px; /* Font size */
+    margin-top: 30px; /* Margin */
+    width: 100%; /* Full width */
+    max-width: 250px; /* Maximum width */
+    display: block; /* Block display */
+    margin-left: auto; /* Center horizontally */
+    margin-right: auto; /* Center horizontally */
+}
+
+/* Forgot password link styling */
+.forgot-password {
+    text-align: center; /* Center the text */
+    color: #628CF8; /* Color */
+    margin-top: 10px; /* Added margin for spacing */
+}
+
+/* Divider for "or" */
+.or-divider {
+    text-align: center; /* Center text */
+    margin: 30px 0; /* Vertical spacing */
+    font-size: 18px; /* Font size */
+    font-weight: bold; /* Bold text */
+}
+
+/* Google sign-in section */
+.google-signin {
+    display: flex; /* Flex display */
+    align-items: center; /* Align items vertically */
+    justify-content: center; /* Center items horizontally */
+    margin-top: 20px; /* Top margin */
+}
+
+/* Google logo styling */
+.google-logo {
+    width: 40px; /* Fixed width */
+    height: auto; /* Maintain aspect ratio */
+    margin-right: 10px; /* Right margin */
+    vertical-align: middle; /* Align vertically */
+}
+
+/* New account text styling */
+.new-account {
+    text-align: center; /* Center text */
+    margin-top: 50px; /* Top margin */
+    font-size: 16px; /* Font size */
+}

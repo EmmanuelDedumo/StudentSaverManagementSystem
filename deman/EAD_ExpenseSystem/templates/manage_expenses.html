@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Expenses</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'manageexpense.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="sidebar">
+        <div class="profile-section">
+            <img src="{% static 'huh.jpg' %}" alt="Profile Picture" />
+            <h3>Emmanuel Dedumo</h3>
+            <p>onethecreamy@gmail.com</p>
+        </div>
+        
+        <div class="management-section">
+            <h3>Management</h3>
+            <ul>
+                <li><img src="{% static 'dashboard.png' %}" alt="Dashboard Icon" class="sidebar-icon"> <a href="{% url 'dashboard' %}">Dashboard</a></li>
+                <li><img src="{% static 'more.png' %}" alt="Add Expenses Icon" class="sidebar-icon"> <a href="{% url 'add_expense' %}">Add Expenses</a></li>
+                <li class="active"><img src="{% static 'dollar.png' %}" alt="Manage Expenses Icon" class="sidebar-icon"> <a href="{% url 'manage_expenses' %}">Manage Expenses</a></li>
+                <li><img src="{% static 'add_report.png' %}" alt="Expense Report Icon" class="sidebar-icon"> <a href="{% url 'expense_report' %}">Expense Report</a></li>
+                <li><img src="{% static 'add_savings.png' %}" alt="Savings Icon" class="sidebar-icon"> <a href="#">Savings</a></li>
+            </ul>
+        </div>
+        
+        <div class="settings-section">
+            <h3>Settings</h3>
+            <ul>
+                <li><img src="{% static 'user.png' %}" alt="Profile Icon" class="sidebar-icon"> <a href="{% url 'profile' %}">Profile</a></li>
+                <li><img src="{% static 'exit.png' %}" alt="Logout Icon" class="sidebar-icon"> <a href="{% url 'logout' %}" class="btn btn-secondary">Logout</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="main-dashboard">
+        <div class="header">
+            <h1>Manage Your Expenses</h1>
+        </div>
+
+        <div class="expense-list background-box">
+            <h2>Your Expenses</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Amount</th>
+                        <th>Date</th>
+                        <th>Category</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for expense in expenses %}
+                    <tr>
+                        <td>{{ expense.amount }}</td>
+                        <td>{{ expense.date }}</td>
+                        <td>{{ expense.category }}</td>
+                        <td>
+                            <a href="{% url 'edit_expense' expense.id %}" class="btn btn-edit">Edit</a>
+                            <form method="POST" action="{% url 'delete_expense' expense.id %}" style="display:inline;">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-delete">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="4">No expenses recorded.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
