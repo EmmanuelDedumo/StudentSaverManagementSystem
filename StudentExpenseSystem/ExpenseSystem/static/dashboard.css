@@ -128,7 +128,9 @@ canvas {
 }
 
 .dropdown-content {
-    display: none;
+    display: block; /* Always in the DOM */
+    opacity: 0; /* Hidden initially */
+    visibility: hidden; /* Ensures it's not clickable */
     position: absolute;
     background-color: white;
     min-width: 160px;
@@ -138,6 +140,7 @@ canvas {
     right: 0;
     padding: 10px;
     font-size: 15px;
+    transition: opacity 0.3s ease, visibility 0.3s ease; /* Add delay for smooth transition */
 }
 
 .dropdown-content a {
@@ -151,7 +154,8 @@ canvas {
     background-color: #ddd;
 }
 
-/* Show the dropdown menu on hover */
+/* Show the dropdown menu with a delay on hover */
 .profile-dropdown:hover .dropdown-content {
-    display: block;
+    opacity: 1; /* Make it visible */
+    visibility: visible; /* Allow interaction */
 }
