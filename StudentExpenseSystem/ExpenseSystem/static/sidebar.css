@@ -3,10 +3,17 @@
     width: 220px;
     background-color: #ffffff; /* White background */
     position: fixed;
+    top: 0;
+    left: 0; /* Ensure sidebar is positioned at the left */
     height: 100%; /* Full height of the page */
     box-shadow: 2px 0 5px rgba(0,0,0,0.1); /* Subtle shadow */
     padding: 20px;
     overflow: hidden; /* Prevent scrolling */
+}
+
+/* Add padding or margin to the body content to make space for the sidebar */
+body {
+    margin-left: 220px; /* Push the body content to the right of the sidebar */
 }
 
 /* Profile Section */

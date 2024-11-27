@@ -22,6 +22,9 @@ urlpatterns = [
     path('get-expense-data/', views.get_expense_data, name='get_expense_data'),  # add this line
     path('monthly-expenses/', views.get_monthly_expenses, name='get_monthly_expenses'),
     path('profile/', views.user_profile, name='user_profile'),
+    path('savings/', views.savings_dashboard, name='savings_dashboard'),
+    path('deposit/', views.deposit_savings, name='deposit_savings'),
+    
 ]
 
 if settings.DEBUG:

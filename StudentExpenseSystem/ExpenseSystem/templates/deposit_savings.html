@@ -1,0 +1,19 @@
+{% block content %}
+    <div class="main-content">
+        <div class="savings-container">
+            <h2>Deposit to Savings</h2>
+            <form method="POST">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="deposit-amount">Amount to Deposit (₱):</label>
+                    <input type="number" name="amount" id="deposit-amount" required>
+                </div>
+                <input type="hidden" name="action" value="deposit"> <!-- Action for deposit -->
+                <button type="submit" class="button">Deposit</button>
+            </form>
+            {% if success_message %}
+                <p>{{ success_message }}</p>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

@@ -24,7 +24,7 @@
             </li>
             <li class="{% if request.resolver_match.url_name == 'savings' %}active{% endif %}">
                 <img src="{% static 'add_savings.png' %}" alt="Savings Icon" class="sidebar-icon">
-                <a href="#">Savings</a>
+                <a href="{% url 'savings_dashboard' %}">Savings</a>
             </li>
         </ul>
     </div>

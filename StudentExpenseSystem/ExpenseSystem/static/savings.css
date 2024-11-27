@@ -1,0 +1,114 @@
+/* Body - Layout */
+body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    background-color: #f9f9f9;
+    display: flex;
+    height: 100vh; /* Full height of the page */
+}
+
+/* Sidebar */
+.sidebar {
+    width: 220px;
+    background-color: #ffffff;
+    position: fixed;
+    height: 100%;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    overflow: hidden;
+}
+
+/* Main Content */
+.main-content {
+    margin-left: 220px; /* Sidebar width */
+    width: calc(100% - 220px); /* Remaining width after sidebar */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+/* Savings Dashboard */
+.savings-container {
+    background-color: #fff;
+    border-radius: 8px;
+    border: 2px solid #ccc;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 100%; /* Make the dashboard full width */
+    max-width: 600px; /* Optional: Set a max width for responsiveness */
+    text-align: center;
+}
+
+.savings-header {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.savings-balance {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 32px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.savings-balance span {
+    margin-right: 10px;
+}
+
+.savings-info {
+    font-size: 12px;
+    color: #777;
+    margin-bottom: 20px;
+}
+
+.button-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-transform: uppercase;
+    font-size: 12px;
+    transition: background-color 0.3s;
+}
+
+.button:hover {
+    background-color: #0056b3;
+}
+
+.eye-icon {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        width: 180px;
+    }
+
+    .main-content {
+        margin-left: 180px;
+        width: calc(100% - 180px);
+    }
+
+    .savings-container {
+        width: 90%;
+        max-width: 100%;
+    }
+
+    .button {
+        font-size: 10px;
+        padding: 8px 16px;
+    }
+}

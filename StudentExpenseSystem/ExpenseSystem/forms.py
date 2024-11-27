@@ -29,3 +29,6 @@ class UserProfileForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ['first_name', 'last_name', 'email']       
+
+class DepositForm(forms.Form):
+    amount = forms.DecimalField(max_digits=10, decimal_places=2, min_value=0.01, label="Deposit Amount")

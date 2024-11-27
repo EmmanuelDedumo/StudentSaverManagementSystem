@@ -27,4 +27,7 @@ urlpatterns = [
     path('', lambda request: redirect('login')),  # Redirect root URL to login
     path('register/', views.register_view, name='register'),  # New registration path
     path('dashboard/', views.dashboard, name='dashboard'),
+    path('savings/', views.savings_dashboard, name='savings_dashboard'),
+    path('deposit/', views.deposit_savings, name='deposit_savings'),
+    
 ]

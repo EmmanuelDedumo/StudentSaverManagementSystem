@@ -17,6 +17,8 @@ from django.utils import timezone
 import calendar
 from django.db.models import Sum
 from django.utils import timezone
+from .models import Savings
+from .forms import DepositForm
 
 
 
@@ -267,3 +269,68 @@ def user_profile(request):
         return redirect('user_profile')  # Redirect to the same page after saving
 
     return render(request, 'user_profile.html')
+
+def savings_dashboard(request):
+    # Retrieve or create the savings object for the current user
+    savings, created = Savings.objects.get_or_create(
+        user=request.user,
+        defaults={
+            'total_income': 0.0,
+            'total_expense': 0.0,
+            'current_savings': 0.0,
+            'amount': 0.0  # Ensure 'amount' has a default value
+        }
+    )
+
+    # Handling POST requests for depositing or transferring money
+    if request.method == "POST":
+        action = request.POST.get('action')  # Either 'deposit' or 'transfer'
+        amount = float(request.POST.get('amount', 0))
+
+        if action == 'deposit':
+            savings.total_income += amount  # Add deposit amount to total_income
+        elif action == 'transfer':
+            if savings.current_savings >= amount:
+                savings.current_savings -= amount  # Deduct amount for transfer
+            else:
+                return render(request, 'savings.html', {
+                    'savings': savings,
+                    'error': "Insufficient savings for transfer."
+                })
+
+        # Recalculate current savings based on income and expenses
+        savings.current_savings = savings.total_income - savings.total_expense
+        savings.save()  # Save the updated savings object to the database
+
+        return redirect('savings_dashboard')  # Redirect to refresh the savings balance
+
+    return render(request, 'savings.html', {'savings': savings})  # Pass updated savings to the template
+
+
+def deposit_savings(request):
+    # Retrieve the user's savings object
+    savings = Savings.objects.get(user=request.user)
+    
+    if request.method == "POST":
+        action = request.POST.get('action')
+        amount = float(request.POST.get('amount', 0))
+
+        if action == 'deposit':
+            savings.total_income += amount
+        elif action == 'transfer':
+            if savings.current_savings >= amount:
+                savings.current_savings -= amount
+            else:
+                return render(request, 'savings.html', {
+                    'savings': savings,
+                    'error': "Insufficient savings for transfer."
+                })
+        
+        # Recalculate current savings based on income and expenses
+        savings.current_savings = savings.total_income - savings.total_expense
+        savings.save()
+        
+        # After deposit, redirect back to the savings dashboard
+        return redirect('savings_dashboard')
+
+    return render(request, 'deposit_savings.html', {'savings': savings})  # Render deposit page

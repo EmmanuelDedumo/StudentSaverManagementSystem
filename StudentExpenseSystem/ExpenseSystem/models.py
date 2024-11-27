@@ -29,15 +29,11 @@ class Expense(models.Model):
         return f"Expense {self.id} - {self.amount} - {self.date}"
 
 class Savings(models.Model):
-    FUND_SOURCE_CHOICES = [
-        ('e-wallet', 'E-Wallet'),
-        ('bank', 'Bank'),
-    ]
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    total_income = models.FloatField(default=0.00)
+    total_expense = models.FloatField(default=0.00)
+    current_savings = models.FloatField(default=0.00)
 
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    amount = models.DecimalField(max_digits=10, decimal_places=2)
-    fund_source = models.CharField(max_length=20, choices=FUND_SOURCE_CHOICES)
-    date = models.DateField()
-
-    def __str__(self):
-        return f"{self.user.username} - {self.amount}"
+    @property
+    def balance(self):
+        return self.total_income - self.total_expense

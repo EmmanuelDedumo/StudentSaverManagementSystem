@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Savings Dashboard</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'savings.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    {% include 'sidebar.html' %}
+
+    <div class="main-content">
+        <div class="savings-container">
+            <div class="savings-header">SAVINGS</div>
+            <div class="savings-balance">
+                <span>₱</span>
+                <span id="balance">{{ savings.current_savings }}</span> <!-- Show actual balance dynamically -->
+                <a href="#" onclick="toggleBalance()">
+                    <img id="eye-icon" class="eye-icon" src="#" alt="eye">
+                </a>
+            </div>
+            <div class="savings-info">3% p.a for savings up to ₱5,000</div>
+            <div class="button-container">
+                <a href="{% url 'deposit_savings' %}" class="button">Deposit</a>
+                <button class="button">Transfer</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let isHidden = false;
+
+        function toggleBalance() {
+            const balanceElement = document.getElementById('balance');
+            const eyeIcon = document.getElementById('eye-icon');
+
+            // Hide the balance with dots if it is visible, and show it when hidden
+            if (isHidden) {
+                balanceElement.textContent = "{{ savings.current_savings }}"; // Show actual balance after deposit
+                eyeIcon.style.transform = "none"; // Reset eye icon style
+                isHidden = false;
+            } else {
+                balanceElement.textContent = "••••••••••"; // Hide balance with dots
+                eyeIcon.style.transform = "rotate(45deg)"; // Mimic eye closure
+                isHidden = true;
+            }
+        }
+    </script>
+</body>
+</html>
