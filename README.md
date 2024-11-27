@@ -11,7 +11,7 @@ The **Student Daily Expense Management System** is a comprehensive web applicati
 - **Manage Expenses**: Users can view, edit, and delete their expenses, providing flexibility in managing their financial records.
 - **Expense Report**: Generate reports to visualize spending trends over time, helping users make informed decisions about their finances.
 - **Savings Goal**: Set and track savings goals to encourage users to save for future needs or projects.
-- **User Profile**: Maintain user profiles to personalize the experience and ensure data security.
+- **User Profile**: Users can change and delete their profile and also update their personal information.
 
 ## Figma Link
 
