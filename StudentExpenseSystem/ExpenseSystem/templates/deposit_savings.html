@@ -6,11 +6,11 @@
                 {% csrf_token %}
                 <div class="form-group">
                     <label for="deposit-amount">Amount to Deposit (₱):</label>
-                    <input type="number" name="amount" id="deposit-amount" required>
+                    <input type="number" name="amount" id="deposit-amount" step="0.01" required>
                 </div>
                 <input type="hidden" name="action" value="deposit"> <!-- Action for deposit -->
                 <button type="submit" class="button">Deposit</button>
-            </form>
+            </form>            
             {% if success_message %}
                 <p>{{ success_message }}</p>
             {% endif %}

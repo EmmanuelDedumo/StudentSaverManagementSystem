@@ -313,24 +313,36 @@ def deposit_savings(request):
     
     if request.method == "POST":
         action = request.POST.get('action')
-        amount = float(request.POST.get('amount', 0))
+        amount = request.POST.get('amount')
 
-        if action == 'deposit':
-            savings.total_income += amount
-        elif action == 'transfer':
-            if savings.current_savings >= amount:
-                savings.current_savings -= amount
-            else:
-                return render(request, 'savings.html', {
-                    'savings': savings,
-                    'error': "Insufficient savings for transfer."
-                })
-        
-        # Recalculate current savings based on income and expenses
-        savings.current_savings = savings.total_income - savings.total_expense
-        savings.save()
-        
-        # After deposit, redirect back to the savings dashboard
-        return redirect('savings_dashboard')
+        try:
+            # Convert the amount to a float and round it to two decimal places
+            amount = float(amount)
+            amount = round(amount, 2)  # Round to 2 decimal places for precision
 
+            if action == 'deposit':
+                savings.total_income += amount
+            elif action == 'transfer':
+                if savings.current_savings >= amount:
+                    savings.current_savings -= amount
+                else:
+                    return render(request, 'savings.html', {
+                        'savings': savings,
+                        'error': "Insufficient savings for transfer."
+                    })
+            
+            # Recalculate current savings based on income and expenses
+            savings.current_savings = savings.total_income - savings.total_expense
+            savings.save()
+            
+            # After deposit, redirect back to the savings dashboard
+            return redirect('savings_dashboard')
+
+        except ValueError:
+            return render(request, 'deposit_savings.html', {
+                'savings': savings,
+                'error': "Invalid amount entered. Please enter a valid number."
+            })
+    
     return render(request, 'deposit_savings.html', {'savings': savings})  # Render deposit page
+

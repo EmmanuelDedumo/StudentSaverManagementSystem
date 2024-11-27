@@ -18,7 +18,7 @@
             <div class="savings-header">SAVINGS</div>
             <div class="savings-balance">
                 <span>₱</span>
-                <span id="balance">{{ savings.current_savings }}</span> <!-- Show actual balance dynamically -->
+                <span id="balance">{{ savings.current_savings|floatformat:2 }}</span> <!-- Show actual balance dynamically -->
                 <a href="#" onclick="toggleBalance()">
                     <img id="eye-icon" class="eye-icon" src="#" alt="eye">
                 </a>
@@ -33,22 +33,26 @@
 
     <script>
         let isHidden = false;
+        let actualBalance = "{{ savings.current_savings|floatformat:2 }}";  // Actual balance from Django template
 
         function toggleBalance() {
             const balanceElement = document.getElementById('balance');
             const eyeIcon = document.getElementById('eye-icon');
 
-            // Hide the balance with dots if it is visible, and show it when hidden
+            // Check if the balance is 0.00 or any other value
             if (isHidden) {
-                balanceElement.textContent = "{{ savings.current_savings }}"; // Show actual balance after deposit
+                balanceElement.textContent = actualBalance; // Show actual balance
                 eyeIcon.style.transform = "none"; // Reset eye icon style
                 isHidden = false;
             } else {
-                balanceElement.textContent = "••••••••••"; // Hide balance with dots
+                // When the balance is hidden, show dots but keep it consistent
+                let numberOfDots = Math.max(1, Math.floor(actualBalance.length / 1)); // Generate at least one dot
+                balanceElement.textContent = "•".repeat(numberOfDots); // Generate dots dynamically
                 eyeIcon.style.transform = "rotate(45deg)"; // Mimic eye closure
                 isHidden = true;
             }
         }
+
     </script>
 </body>
 </html>
