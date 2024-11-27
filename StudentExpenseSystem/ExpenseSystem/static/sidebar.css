@@ -6,9 +6,12 @@
     height: 100%;
     box-shadow: 2px 0 5px rgba(0,0,0,0.1);
     padding: 20px;
-    overflow: hidden;
-    margin-top: 60px; /* Adjust the margin to move content down */
-    border-right: 2px solid #ccc;
+    overflow: hidden; /* Prevent scrolling */
+}
+
+/* Add padding or margin to the body content to make space for the sidebar */
+body {
+    margin-left: 220px; /* Push the body content to the right of the sidebar */
 }
 
 /* Profile Section */
@@ -70,41 +73,9 @@
     color: #628CF8;
 }
 
+/* Hover effect for sidebar items */
 .management-section li a:hover,
 .settings-section li a:hover {
-    background-color: #f5f5f5;
-    color: #000;
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-    .sidebar {
-        width: 180px; /* Reduce width on smaller screens */
-    }
-
-    .sidebar .profile-section img {
-        width: 100px;
-        height: 100px;
-    }
-
-    .sidebar-icon {
-        width: 18px;
-        height: 18px;
-    }
-}
-
-@media (max-width: 480px) {
-    .sidebar {
-        width: 150px; /* Further reduce width for mobile */
-    }
-
-    .sidebar .profile-section img {
-        width: 80px;
-        height: 80px;
-    }
-
-    .sidebar-icon {
-        width: 15px;
-        height: 15px;
-    }
+    background-color: #f5f5f5; /* Light gray on hover */
+    color: #000; /* Dark text on hover */
 }
