@@ -1,0 +1,17 @@
+{% load static %}
+<nav class="navbar">
+    <link rel="stylesheet" href="{% static 'navbar.css' %}">
+    <!-- Logo on the left side -->
+    <div class="navbar-logo">
+        <img src="{% static 'piggy-bank.png' %}" alt="Logo" class="logo">
+    </div>
+    
+    <!-- Profile Dropdown on the right side -->
+    <div class="profile-dropdown">
+        <img src="{% static 'default_profile.png' %}" alt="User Profile" class="profile-icon" id="profileIcon">
+        <div class="dropdown-content" id="dropdownMenu">
+            <a href="{% url 'user_profile' %}">My Account</a>
+            <a href="{% url 'logout' %}">Logout</a>
+        </div>
+    </div>
+</nav>

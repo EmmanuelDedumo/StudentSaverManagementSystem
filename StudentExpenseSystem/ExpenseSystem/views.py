@@ -60,7 +60,6 @@ def register_view(request):
         
         # Create user
         User.objects.create_user(username=username, email=email, password=password)
-        messages.success(request, "Registration successful. Please log in.")
         return redirect('login')
     
     return render(request, "register.html")
@@ -209,31 +208,20 @@ def get_expense_data(request):
     return JsonResponse(data)
 
 @login_required
-def get_monthly_expenses(request):
-    # Get current year and month
-    current_year = timezone.now().year
-    
-    # Aggregate expenses by month for the current year
-    expenses_by_month = Expense.objects.filter(date__year=current_year) \
-        .values('date__month') \
+def get_expenses_by_date(request):
+    # Fetch expenses grouped by the exact date
+    expenses_by_date = Expense.objects.values('date') \
         .annotate(total_expense=Sum('amount')) \
-        .order_by('date__month')
+        .order_by('date')  # Order by date to get chronological order
 
-    # Prepare data for the line chart
-    months = [calendar.month_name[month['date__month']] for month in expenses_by_month]
-    total_expenses = [month['total_expense'] for month in expenses_by_month]
-
-    # Fill missing months with zero if no data for a month
-    all_months = list(calendar.month_name[1:])
-    for month in all_months:
-        if month not in months:
-            months.append(month)
-            total_expenses.append(0)
+    # Prepare data for the chart
+    dates = [expense['date'].strftime('%Y-%m-%d') for expense in expenses_by_date]
+    total_expenses = [expense['total_expense'] for expense in expenses_by_date]
 
     data = {
-        'labels': months,
+        'labels': dates,
         'datasets': [{
-            'label': 'Expenses by Month',
+            'label': 'Expenses by Date',
             'data': total_expenses,
             'fill': False,
             'borderColor': 'rgba(75, 192, 192, 1)',
@@ -242,6 +230,7 @@ def get_monthly_expenses(request):
     }
     return JsonResponse(data)
 
+
 @login_required
 def user_profile(request):
     if request.method == "POST":
@@ -249,6 +238,7 @@ def user_profile(request):
         user = request.user
 
         # Update user details
+        user.username = request.POST.get("username")
         user.first_name = request.POST.get("first_name")
         user.last_name = request.POST.get("last_name")
         user.email = request.POST.get("email")

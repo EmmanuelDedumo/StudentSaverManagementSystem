@@ -43,6 +43,16 @@ a:active {
     margin-bottom: 20px; /* Space below header */
 }
 
+/* Header Section */
+.header {
+    padding: 20px; /* Space inside the header */
+    margin-bottom: -50px; /* Space outside, pushing other elements down */
+}
+
+.header h1 {
+    margin-top: 80px; /* Adjust this value to move it further down */
+}
+
 /* Action Buttons */
 
 
@@ -116,56 +126,4 @@ a:active {
 canvas {
     width: 100% !important;  /* Ensures the chart scales to fit its container */
     height: auto !important; /* Maintain aspect ratio */
-}
-
-/* Profile Dropdown */
-.profile-dropdown {
-    position: absolute;  /* Position it relative to the page */
-    top: 20px;           /* Distance from the top of the page */
-    right: 20px;         /* Distance from the right of the page */
-}
-
-.profile-icon {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    cursor: pointer;
-}
-
-.dropdown-content {
-    display: none;  /* Hide the dropdown initially */
-    position: absolute;
-    background-color: white;
-    min-width: 160px;
-    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
-    z-index: 1;
-    top: 50px;  /* Position the dropdown below the profile icon */
-    right: 0;
-    padding: 10px;
-    font-size: 15px;
-    transition: opacity 0.3s ease, visibility 0.3s ease;
-    border-bottom: 2px solid #ccc;  /* Adds the line below the dropdown */
-}
-
-.dropdown-content a {
-    color: black;
-    padding: 8px 16px;
-    text-decoration: none;
-    display: block;
-}
-
-.dropdown-content a:hover {
-    background-color: #ddd;
-}
-
-/* Show the dropdown menu with a delay on hover */
-.profile-dropdown:hover .dropdown-content {
-    display: block;  /* Show the dropdown when hovering over the profile icon */
-}
-
-.profile-line {
-    width: 100%; /* Full width */
-    height: 2px; /* Line thickness */
-    background-color: #ccc; /* Line color */
-    margin-top: 5px; /* Adjust space between dropdown and the line */
 }

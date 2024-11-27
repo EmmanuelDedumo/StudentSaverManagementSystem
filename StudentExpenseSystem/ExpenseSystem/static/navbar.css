@@ -1,0 +1,57 @@
+/* Style for the Navbar */
+.navbar {
+    display: flex;
+    justify-content: space-between; /* Distribute items across the navbar */
+    align-items: center;
+    background-color: #ffff;
+    padding: 5px 15px; /* Reduce padding to make the navbar smaller */
+    color: white;
+    position: fixed; /* Keep the navbar fixed at the top */
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000; /* Ensure it stays on top of other elements */
+    height: 50px; /* Set a fixed height for the navbar */
+    border-bottom: 2px solid #ccc;
+}
+
+.navbar-logo img {
+    height: 40px; /* Adjust the size of the logo to make it smaller */
+}
+
+.profile-dropdown {
+    position: relative;
+    margin-left: auto; /* Push the profile dropdown to the right */
+}
+
+.profile-icon {
+    width: 30px; /* Adjust the size of the profile icon */
+    height: 30px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    top: 35px; /* Adjust the dropdown position relative to the smaller navbar */
+    right: 0; /* Align the dropdown to the right of the profile icon */
+    background-color: #fff;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 8px 12px; /* Reduce the padding for smaller dropdown items */
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-content a:hover {
+    background-color: #ddd;
+}
+
+.profile-dropdown:hover .dropdown-content {
+    display: block;
+}
