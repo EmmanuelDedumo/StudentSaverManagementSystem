@@ -7,7 +7,6 @@
     {% load static %}
     <link rel="stylesheet" href="{% static 'dashboard.css' %}">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Include Chart.js library -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
@@ -24,9 +23,7 @@
                     <a href="{% url 'logout' %}">Logout</a>
                 </div>
             </div>
-            <div class="profile-line"></div>
         </div>
-        
 
         <div class="action-container">
             <div class="action-buttons background-box">
@@ -34,17 +31,14 @@
                     <img src="{% static 'money.png' %}" alt="Add Expenses Icon" class="action-icon">
                     <p>Expenses</p>
                 </a>
-                
                 <a href="{% url 'expense_report' %}" class="action-button add-expenses">
                     <img src="{% static 'report.png' %}" alt="Expense Report Icon" class="action-icon">
                     <p>Expense Report</p>
                 </a>
-                
                 <div class="action-button savings">
                     <img src="{% static 'piggy-bank.png' %}" alt="Savings Icon" class="action-icon">
                     <p>Savings</p>
                 </div>
-                
                 <a href="{% url 'user_profile' %}" class="action-button add-expenses">
                     <img src="{% static 'bussiness-man.png' %}" alt="User Profile Icon" class="action-icon">
                     <p>User Profile</p>
@@ -54,7 +48,6 @@
 
         <div class="expense-report background-box">
             <h2>Expense Data Visualization</h2>
-            
             <div class="charts-container">
                 <div class="chart-container">
                     <canvas id="expenseChart" width="300" height="200"></canvas>
@@ -66,19 +59,18 @@
         </div>
 
         <script>
-            // Fetch expense data for the bar chart
+            // Fetch and display chart data
             fetch("{% url 'get_expense_data' %}")
                 .then(response => response.json())
                 .then(data => {
-                    // Initialize the bar chart (expenses by category)
                     var ctxCategory = document.getElementById('expenseChart').getContext('2d');
                     var expenseChart = new Chart(ctxCategory, {
                         type: 'bar',
                         data: {
-                            labels: data.labels,  // Categories
+                            labels: data.labels,
                             datasets: [{
                                 label: 'Expenses by Category',
-                                data: data.datasets[0].data,  // Amounts per category
+                                data: data.datasets[0].data,
                                 backgroundColor: '#9BD0F5',
                                 borderColor: '#36A2EB',
                                 borderWidth: 1
@@ -87,51 +79,41 @@
                         options: {
                             responsive: true,
                             scales: {
-                                x: {
-                                    beginAtZero: true
-                                },
-                                y: {
-                                    beginAtZero: true
-                                }
+                                x: { beginAtZero: true },
+                                y: { beginAtZero: true }
                             }
                         }
                     });
                 })
                 .catch(error => console.error('Error fetching expense data:', error));
 
-            // Fetch monthly expense data for the line chart
             fetch("{% url 'get_monthly_expenses' %}")
-            .then(response => response.json())
-    .then(data => {
-        // Initialize the line chart (expenses by month)
-        var ctxMonthly = document.getElementById('monthlyExpenseChart').getContext('2d');
-        var monthlyExpenseChart = new Chart(ctxMonthly, {
-            type: 'line',
-            data: {
-                labels: data.labels,  // Only months with expenses
-                datasets: [{
-                    label: 'Monthly Expenses',
-                    data: data.datasets[0].data,  // Monthly expense amounts
-                    borderColor: 'rgba(54, 162, 235, 1)',
-                    backgroundColor: 'rgba(99, 184, 255, 0.2)', 
-                    fill: true,
-                    borderWidth: 2
-                }]
-            },
-            options: {
-                responsive: true,
-                scales: {
-                    x: {
-                        beginAtZero: true
-                    },
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            }
-        });
-    })
-    .catch(error => console.error('Error fetching monthly expense data:', error));
+                .then(response => response.json())
+                .then(data => {
+                    var ctxMonthly = document.getElementById('monthlyExpenseChart').getContext('2d');
+                    var monthlyExpenseChart = new Chart(ctxMonthly, {
+                        type: 'line',
+                        data: {
+                            labels: data.labels,
+                            datasets: [{
+                                label: 'Monthly Expenses',
+                                data: data.datasets[0].data,
+                                borderColor: '#FF5733',
+                                backgroundColor: 'rgba(255, 87, 51, 0.2)',
+                                fill: true,
+                                borderWidth: 2
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            scales: {
+                                x: { beginAtZero: true },
+                                y: { beginAtZero: true }
+                            }
+                        }
+                    });
+                })
+                .catch(error => console.error('Error fetching monthly expense data:', error));
         </script>
     </div>
 </body>
