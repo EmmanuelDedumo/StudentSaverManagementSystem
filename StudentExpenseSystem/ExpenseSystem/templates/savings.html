@@ -10,7 +10,7 @@
 </head>
 
 <body>
-
+    {% include 'navbar.html' %}
     {% include 'sidebar.html' %}
 
     <div class="main-content">
@@ -20,9 +20,9 @@
                 <span>₱</span>
                 <span id="balance">{{ savings.current_savings|floatformat:2 }}</span> <!-- Show actual balance dynamically -->
                 <a href="#" onclick="toggleBalance()">
-                    <img id="eye-icon" class="eye-icon" src="#" alt="eye">
+                    <img id="eye-icon" class="eye-icon" src="{% static 'openeye.png' %}">
                 </a>
-            </div>
+            </div>            
             <div class="savings-info">3% p.a for savings up to ₱5,000</div>
             <div class="button-container">
                 <a href="{% url 'deposit_savings' %}" class="button">Deposit</a>
@@ -36,22 +36,19 @@
         let actualBalance = "{{ savings.current_savings|floatformat:2 }}";  // Actual balance from Django template
 
         function toggleBalance() {
-            const balanceElement = document.getElementById('balance');
-            const eyeIcon = document.getElementById('eye-icon');
+    const balanceElement = document.getElementById('balance');
+    const eyeIcon = document.getElementById('eye-icon');
 
-            // Check if the balance is 0.00 or any other value
-            if (isHidden) {
-                balanceElement.textContent = actualBalance; // Show actual balance
-                eyeIcon.style.transform = "none"; // Reset eye icon style
-                isHidden = false;
-            } else {
-                // When the balance is hidden, show dots but keep it consistent
-                let numberOfDots = Math.max(1, Math.floor(actualBalance.length / 1)); // Generate at least one dot
-                balanceElement.textContent = "•".repeat(numberOfDots); // Generate dots dynamically
-                eyeIcon.style.transform = "rotate(45deg)"; // Mimic eye closure
-                isHidden = true;
-            }
-        }
+    if (isHidden) {
+        balanceElement.textContent = actualBalance; // Show actual balance
+        eyeIcon.src = "{% static 'openeye.png' %}"; // Eye open icon
+        isHidden = false;
+    } else {
+        balanceElement.textContent = "•".repeat(actualBalance.length); // Hide balance with dots
+        eyeIcon.src = "{% static 'openhide.png' %}"; // Eye hide icon
+        isHidden = true;
+    }
+}
 
     </script>
 </body>
