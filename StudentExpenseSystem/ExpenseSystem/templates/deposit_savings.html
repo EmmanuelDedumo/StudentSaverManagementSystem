@@ -1,19 +1,128 @@
 {% block content %}
-    <div class="main-content">
-        <div class="savings-container">
-            <h2>Deposit to Savings</h2>
-            <form method="POST">
-                {% csrf_token %}
-                <div class="form-group">
-                    <label for="deposit-amount">Amount to Deposit (₱):</label>
-                    <input type="number" name="amount" id="deposit-amount" step="0.01" required>
-                </div>
-                <input type="hidden" name="action" value="deposit"> <!-- Action for deposit -->
-                <button type="submit" class="button">Deposit</button>
-            </form>            
-            {% if success_message %}
-                <p>{{ success_message }}</p>
-            {% endif %}
+    <!-- Include Sidebar -->
+    {% include 'sidebar.html' %}
+
+    <div class="main-dashboard">
+        <div class="header">
+            <h1>Savings</h1>
+        </div>
+
+        <div class="action-container">
+            <div class="savings-container background-box">
+                <h2>Deposit to Savings</h2>
+                <form method="POST" class="savings-form">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="deposit-amount">Amount to Deposit (₱):</label>
+                        <input type="number" name="amount" id="deposit-amount" step="0.01" required>
+                    </div>
+                    <input type="hidden" name="action" value="deposit">
+                    <button type="submit" class="action-button add-expenses">
+                        <p>Deposit</p>
+                    </button>
+                </form>
+                {% if success_message %}
+                    <p class="success-message">{{ success_message }}</p>
+                {% endif %}
+            </div>
         </div>
     </div>
 {% endblock %}
+
+<style>
+    /* General Styles */
+    body {
+        font-family: Poppins, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+    }
+
+    .main-dashboard {
+        margin-left: 250px; /* Sidebar width */
+        padding: 20px;
+        background-color: #ecf0f1;
+    }
+
+    .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 24px;
+        font-weight: bold;
+        margin-bottom: 20px;
+    }
+
+    /* Savings Form */
+    .savings-container {
+        background-color: #ffffff;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        padding: 20px;
+        max-width: 500px;
+        margin: 0 auto;
+        text-align: center;
+    }
+
+    .savings-form {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .form-group {
+        text-align: left;
+    }
+
+    label {
+        font-size: 14px;
+        color: #555;
+    }
+
+    input[type="number"] {
+        width: 100%;
+        padding: 10px;
+        border-radius: 8px;
+        border: 1px solid #ddd;
+        font-size: 16px;
+        outline: none;
+    }
+
+    input[type="number"]:focus {
+        border-color: #007bff;
+    }
+
+    /* Action Button */
+    .action-button {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        background-color: #ffffff;
+        padding: 10px;
+        border-radius: 20px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        text-align: center;
+        transition: background-color 0.3s ease;
+    }
+
+    .action-button:hover {
+        background-color: #f1f1f1;
+    }
+
+    .action-icon {
+        width: 50px;
+        height: 50px;
+    }
+
+    .action-button p {
+        font-weight: bold;
+        margin-top: 10px;
+    }
+
+    .success-message {
+        margin-top: 20px;
+        color: #28a745;
+        font-size: 16px;
+    }
+</style>
