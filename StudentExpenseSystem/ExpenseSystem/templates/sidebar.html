@@ -3,7 +3,9 @@
     <div class="profile-section">
         <link rel="stylesheet" href="{% static 'sidebar.css' %}">
         <!-- Profile Picture will update here -->
-        <img src="{% if user.profile.profile_picture %}{{ user.profile.profile_picture.url }}{% else %}{% static 'default_profile.png' %}{% endif %}" alt="User Profile" class="profile-icon" id="profile-picture">
+        <img id="sidebar_profile_picture" 
+     src="{% if user.profile.profile_picture %}{{ user.profile.profile_picture.url }}{% else %}{% static 'default_profile.png' %}{% endif %}" 
+     alt="Profile Picture" class="sidebar-profile-picture">
         <h3>{{ user.username }}</h3>
         <p>{{ user.email }}</p>
     </div>

@@ -21,17 +21,17 @@
 
         <form id="profile-form" method="POST" enctype="multipart/form-data">
             {% csrf_token %}
-        
+            
             <!-- Profile Picture Section -->
             <div class="profile-picture-section">
                 <img id="profile_picture_preview" 
-     src="{% if user.profile.profile_picture %}{{ user.profile.profile_picture.url }}{% else %}{% static 'default_profile.png' %}{% endif %}" 
-     alt="Profile Picture" class="profile-picture">
-
+                     src="{% if user.profile.profile_picture %}{{ user.profile.profile_picture.url }}{% else %}{% static 'default_profile.png' %}{% endif %}" 
+                     alt="Profile Picture" class="profile-picture">
+        
                 <div class="profile-actions">
                     <input type="file" id="profile_picture_input" name="profile_picture" accept="image/*" style="display: none;" onchange="previewImage(event)">
                     <button type="button" class="btn btn-upload" onclick="document.getElementById('profile_picture_input').click()">Change Picture</button>
-                    <button type="button" class="btn btn-delete">Delete Picture</button>
+                    <button type="button" class="btn btn-delete" onclick="deleteProfilePicture()">Delete Picture</button>
                 </div>
             </div>
         
@@ -70,8 +70,8 @@
     </div>
 
     <script>
-        // Preview the image before upload
-        function previewImage(event) {
+         // Preview the image before upload
+         function previewImage(event) {
             var reader = new FileReader();
             reader.onload = function() {
                 var output = document.getElementById('profile_picture_preview');
@@ -79,28 +79,74 @@
             };
             reader.readAsDataURL(event.target.files[0]);
         }
+    
+         // Get the profile picture URL dynamically from Django context
+        var defaultImage = "{% if user.profile.profile_picture %}{{ user.profile.profile_picture.url }}{% else %}{% static 'default_profile.png' %}{% endif %}";
 
+        // Function to delete profile picture
+function deleteProfilePicture() {
+    var output = document.getElementById('profile_picture_preview');
+    var defaultImage = "{% static 'default_profile.png' %}"; // Ensure the default image URL is correct
+
+    // Reset the image preview to the default profile picture immediately
+    output.src = defaultImage;
+
+    // Update the sidebar and navbar profile pictures dynamically
+    var sidebarProfilePicture = document.getElementById('sidebar_profile_picture');
+    var navbarProfilePicture = document.getElementById('profile-dropdown');
+    sidebarProfilePicture.src = defaultImage;
+    navbarProfilePicture.src = defaultImage;
+
+    // Create FormData and append the delete request
+    var formData = new FormData();
+    formData.append('delete_profile_picture', true);  // Add the flag to delete the picture
+
+    // Send the request via POST
+    fetch("{% url 'user_profile' %}", {
+        method: "POST",
+        headers: {
+            'X-CSRFToken': '{{ csrf_token }}',  // Include CSRF token for security
+        },
+        body: formData,
+    })
+    .then(response => response.json())
+    .then(data => {
+        // If success, reset the profile image preview and show a success message
+        if (data.status === 'success') {
+            // The profile picture has been deleted and reset, so we update the UI
+            alert("Profile picture has been deleted.");
+        }
+    })
+    .catch(error => {
+        console.error('Error resetting profile picture:', error);
+    });
+}
+
+
+
+    
         // When the profile form is submitted and profile picture is updated
         function updateProfilePicture(event) {
             event.preventDefault();
-
+    
             var form = document.getElementById('profile-form');
             var formData = new FormData(form);
-
+    
             fetch("{% url 'user_profile' %}", {
                 method: "POST",
                 body: formData,
             })
             .then(response => response.json())
             .then(data => {
-                // Update the profile picture in the navbar
+                // Update the profile picture in the navbar (optional)
                 document.getElementById('profileIcon').src = data.profile_picture_url;
-                // Optionally, update the username or other fields in the navbar as well
             })
             .catch(error => {
                 console.log("Error updating profile:", error);
             });
         }
     </script>
+    
+
 </body>
 </html>

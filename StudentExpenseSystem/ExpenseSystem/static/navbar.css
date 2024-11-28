@@ -19,66 +19,57 @@
     height: 40px; /* Adjust the size of the logo to make it smaller */
 }
 
-/* Ensure both profile dropdown and piggy-bank icons are inside a flex container */
-.action-buttons {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 50px; /* Adjust this value to make sure the buttons (including piggy-bank) have enough space */
-    margin-top: 20px;
-}
-
 /* Profile Dropdown */
 .profile-dropdown {
     position: relative;
-    margin-left: auto;
-    align-self: center; /* Ensure the profile dropdown aligns with the piggy-bank */
+    margin-left: auto; /* Pushes the profile to the right */
+    align-self: center;
 }
 
-.profile-icon {
-    width: 30px; 
-    height: 30px;
-    border-radius: 50%;
-    cursor: pointer;
+.profile-dropdown-img {
+    width: 40px;        /* Adjust the width as needed */
+    height: 40px;       /* Adjust the height to make it a square */
+    border-radius: 50%; /* Makes the image round */
+    object-fit: cover;  /* Ensures the image doesn't stretch or distort */
+    cursor: pointer;    /* Add cursor pointer to indicate interactivity */
+    transition: transform 0.3s ease; /* Optional: Add a transition effect */
 }
 
+.profile-dropdown-img:hover {
+    transform: scale(1.1); /* Optional: Adds a zoom effect on hover */
+}
+
+/* Dropdown Menu */
 .dropdown-content {
-    display: none;
+    display: block;
+    visibility: hidden;    /* Hidden by default */
+    opacity: 0;            /* Make it fully transparent initially */
     position: absolute;
-    top: 35px; /* Adjust the dropdown position relative to the profile icon */
+    top: 50px;             /* Adjust the dropdown position relative to the profile icon */
     right: 0;
     background-color: #fff;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
     z-index: 1;
+    width: 150px;          /* Set width for dropdown */
+    border-radius: 5px;
+    padding: 5px 0;
+    transition: opacity 0.3s ease, visibility 0s 0.3s; /* Smooth transition for opacity and visibility */
+}
+
+.profile-dropdown:hover .dropdown-content {
+    visibility: visible;   /* Make visible when hovered */
+    opacity: 1;             /* Make it fully opaque */
+    transition-delay: 0s;   /* Ensure it appears immediately */
 }
 
 .dropdown-content a {
     color: black;
-    padding: 8px 12px;
+    padding: 10px 15px;
     text-decoration: none;
     display: block;
+    font-weight: 500;
 }
 
 .dropdown-content a:hover {
     background-color: #ddd;
-}
-
-.profile-dropdown:hover .dropdown-content {
-    display: block;
-}
-
-/* Ensure the piggy-bank icon aligns with profile icon */
-.action-button.savings {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    background-color: #ffffff;
-    padding: 10px 20px;
-    border-radius: 20px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    width: 120px;
-    text-align: center;
-    height: 150px;
-    position: relative; /* Position relative to align with profile */
 }

@@ -8,8 +8,11 @@
     
     <!-- Profile Dropdown on the right side -->
     <div class="profile-dropdown">
-        <img src="{% if user.profile.profile_picture %}{{ user.profile.profile_picture.url }}{% else %}{% static 'default_profile.png' %}{% endif %}" alt="User Profile" class="profile-icon" id="profileIcon">
-        <div class="dropdown-content" id="dropdownMenu">
+        <img id="profile-dropdown" 
+             src="{% if user.profile.profile_picture %}{{ user.profile.profile_picture.url }}{% else %}{% static 'default_profile.png' %}{% endif %}" 
+             alt="Profile Picture" class="profile-dropdown-img">
+        
+        <div class="dropdown-content">
             <a href="{% url 'user_profile' %}">My Account</a>
             <a href="{% url 'logout' %}">Logout</a>
         </div>

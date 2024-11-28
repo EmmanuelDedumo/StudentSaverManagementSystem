@@ -31,6 +31,7 @@ urlpatterns = [
     path('dashboard/', views.dashboard, name='dashboard'),
     path('savings/', views.savings_dashboard, name='savings_dashboard'),
     path('deposit/', views.deposit_savings, name='deposit_savings'),
+    path('delete-profile-picture/', views.delete_profile_picture, name='delete_profile_picture'),
 ]
 
 # Add media URL pattern to serve uploaded media during development

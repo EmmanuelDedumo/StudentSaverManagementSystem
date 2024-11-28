@@ -27,6 +27,7 @@ from io import BytesIO
 import logging
 from django.core.files.storage import FileSystemStorage
 from django.http import JsonResponse
+from django.core.files.storage import default_storage
 
 
 
@@ -241,11 +242,29 @@ def get_expenses_by_date(request):
 
 logger = logging.getLogger(__name__)
 
+from django.http import JsonResponse
+
 @login_required
 def user_profile(request):
     if request.method == 'POST':
-        # Get user profile
+        # Get the user profile
         user_profile = request.user.profile
+
+        # Check if we need to delete the profile picture
+        if 'delete_profile_picture' in request.POST:
+            # Delete the profile picture from storage if it exists
+            if user_profile.profile_picture:
+                picture_path = user_profile.profile_picture.path
+                if default_storage.exists(picture_path):
+                    default_storage.delete(picture_path)
+                    print(f"Profile picture {picture_path} deleted.")  # Debugging log
+                user_profile.profile_picture = None
+                user_profile.save()
+
+            # Return a JSON response indicating the picture has been deleted
+            return JsonResponse({'status': 'success', 'message': 'Profile picture deleted and reset'})
+
+        # If no delete request, handle other profile updates (username, email, etc.)
         username = request.POST.get('username')
         first_name = request.POST.get('first_name')
         last_name = request.POST.get('last_name')
@@ -273,8 +292,9 @@ def user_profile(request):
         request.user.save()
         user_profile.save()
 
+        # Return success message
         messages.success(request, "Profile updated successfully!")
-        return redirect('user_profile')  # Redirect to the profile page
+        return redirect('user_profile')
 
     return render(request, 'user_profile.html')
 
@@ -368,3 +388,14 @@ def save_profile_picture_from_url(user, image_url):
         file_name = image_url.split("/")[-1]
         # Save the image to the user's profile
         user.profile.profile_picture.save(file_name, ContentFile(response.content), save=True)
+
+
+@login_required
+def delete_profile_picture(request):
+    if request.method == "POST":
+        profile = request.user.profile  # Access the user's profile
+        profile.profile_picture.delete(save=False)  # Delete the current picture file
+        profile.profile_picture = None  # Reset to None
+        profile.save()  # Save the changes
+        return JsonResponse({"success": True})
+    return JsonResponse({"error": "Invalid request method"}, status=400)
