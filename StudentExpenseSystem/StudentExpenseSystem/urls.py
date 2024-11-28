@@ -29,6 +29,8 @@ urlpatterns = [
     path('', lambda request: redirect('login')),  # Redirect root to login
     path('register/', views.register_view, name='register'),
     path('dashboard/', views.dashboard, name='dashboard'),
+    path('edit_expense/<int:id>/', views.edit_expense, name='edit_expense'),
+    path('delete_expense/<int:id>/', views.delete_expense, name='delete_expense'),
     path('savings/', views.savings_dashboard, name='savings_dashboard'),
     path('deposit/', views.deposit_savings, name='deposit_savings'),
     path('delete-profile-picture/', views.delete_profile_picture, name='delete_profile_picture'),

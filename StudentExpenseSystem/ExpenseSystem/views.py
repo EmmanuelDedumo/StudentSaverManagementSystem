@@ -146,7 +146,7 @@ def delete_expense(request, id):
     if request.method == 'POST':
         expense.delete()
         messages.success(request, 'Expense deleted successfully!')
-        return redirect('manage_expenses')
+        return redirect('manage_expense')
     
     return render(request, 'delete_expense.html', {'expense': expense})
 
