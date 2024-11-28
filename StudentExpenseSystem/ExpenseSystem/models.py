@@ -28,6 +28,8 @@ class Expense(models.Model):
     def __str__(self):
         return f"Expense {self.id} - {self.amount} - {self.date}"
 
+
+
 class Savings(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     total_income = models.FloatField(default=0.00)
@@ -36,4 +38,7 @@ class Savings(models.Model):
 
     @property
     def balance(self):
-        return self.total_income - self.total_expense
+        return self.total_income - self.total_expense  # Calculate balance dynamically
+
+    def __str__(self):
+        return f"{self.user.username}'s Savings"

@@ -73,53 +73,47 @@ def dashboard(request):
     return render(request, 'dashboard.html', {'expenses': expenses})
 
 @login_required
-def expense_list(request):
-    expenses = Expense.objects.filter(user=request.user)
-    return render(request, 'expense_list.html', {'expenses': expenses})
-
-@login_required
 def add_expense(request):
     if request.method == 'POST':
-        # Retrieve data from the form
         amount = request.POST.get('amount')
         date = request.POST.get('date')
-        category_name = request.POST.get('category')
+        category_id = request.POST.get('category')
         
         try:
-            # Try to retrieve the corresponding Category instance from the database
-            category = Category.objects.get(name=category_name)
+            # Get the category by its ID
+            category = Category.objects.get(id=category_id)
         except Category.DoesNotExist:
-            # If the category doesn't exist, show an error message
-            messages.error(request, "The selected category does not exist.")
-            return render(request, 'addexpense.html', context={})  # Render the form again
+            messages.error(request, 'Category not found.')
+            return redirect('add_expense')  # Redirect back to add_expense page if category is invalid
         
-        # Create a new Expense record, associating it with the logged-in user
-        Expense.objects.create(
+        # Create or retrieve the expense for the current user
+        expense, created = Expense.objects.get_or_create(
+            user=request.user,
             amount=amount,
             date=date,
-            category=category,
-            user=request.user  # Associate the expense with the logged-in user
+            category=category
         )
         
-        # Add a success message without redirecting
-        messages.success(request, "Expense added successfully!")
-        
-        # Render the form again, preserving the success message
-        return render(request, 'addexpense.html')
-    
-    return render(request, 'addexpense.html')
+        if created:
+            messages.success(request, 'Expense added successfully!')
+        else:
+            messages.warning(request, 'This expense already exists.')
+
+        return redirect('manage_expense')  # Redirect to the expense management page
+
+    categories = Category.objects.all()  # Retrieve all categories for the select dropdown
+    return render(request, 'addexpense.html', {'categories': categories})
+
 
 @login_required
 def manage_expense(request):
-    # Query all expenses from the Expense model
-    expenses = Expense.objects.all()
-    
-    # Pass expenses to the template
+    # Retrieve all expenses for the current user
+    expenses = Expense.objects.filter(user=request.user)
     return render(request, 'manage_expense.html', {'expenses': expenses})
 
 @login_required
 def edit_expense(request, id):
-    expense = get_object_or_404(Expense, id=id)  # This automatically handles missing expense
+    expense = get_object_or_404(Expense, id=id, user=request.user)  # Ensure the user owns the expense
     
     # Fetch all categories to pass them to the template
     categories = Category.objects.all()
@@ -128,6 +122,7 @@ def edit_expense(request, id):
         form = ExpenseForm(request.POST, instance=expense)
         if form.is_valid():
             form.save()
+            messages.success(request, 'Expense updated successfully!')
             return redirect('manage_expense')  # Redirect back to the manage_expenses page
     else:
         form = ExpenseForm(instance=expense)
@@ -136,43 +131,50 @@ def edit_expense(request, id):
 
 @login_required
 def delete_expense(request, id):
-    try:
-        expense = Expense.objects.get(id=id)
-    except Expense.DoesNotExist:
-        raise Http404("Expense not found")
+    expense = get_object_or_404(Expense, id=id, user=request.user)  # Ensure the user owns the expense
     
     if request.method == 'POST':
         expense.delete()
-        return redirect('manage_expense')
+        messages.success(request, 'Expense deleted successfully!')
+        return redirect('manage_expenses')
     
     return render(request, 'delete_expense.html', {'expense': expense})
+
+from django.utils import timezone
+from datetime import timedelta
+from django.shortcuts import render
+from .models import Expense  # Make sure to import your Expense model
 
 @login_required
 def expense_report(request):
     today = timezone.now()
-    
+
     # Filter logic based on the user's selection
     filter_type = request.GET.get('filter', 'today')  # Default to 'today'
 
+    # Filter expenses based on the logged-in user
+    user_expenses = Expense.objects.filter(user=request.user)
+
     if filter_type == 'weekly':
-        start_date = today - timedelta(days=today.weekday())  # Start of the week (Monday)
-        end_date = start_date + timedelta(days=6)  # End of the week (Sunday)
-        expenses = Expense.objects.filter(date__range=[start_date, end_date])
-    
+        # Calculate the most recent Sunday
+        start_date = today - timedelta(days=today.weekday() + 1)  # Sunday
+        end_date = start_date + timedelta(days=6)  # End of the week (Saturday)
+        expenses = user_expenses.filter(date__range=[start_date, end_date])
+
     elif filter_type == 'monthly':
         start_date = today.replace(day=1)  # Start of the month
         end_date = (today.replace(month=today.month + 1, day=1) - timedelta(days=1))  # End of the month
-        expenses = Expense.objects.filter(date__range=[start_date, end_date])
+        expenses = user_expenses.filter(date__range=[start_date, end_date])
 
     elif filter_type == 'yearly':
         start_date = today.replace(month=1, day=1)  # Start of the year
         end_date = today.replace(month=12, day=31)  # End of the year
-        expenses = Expense.objects.filter(date__range=[start_date, end_date])
+        expenses = user_expenses.filter(date__range=[start_date, end_date])
 
     else:  # 'today'
         start_date = today.replace(hour=0, minute=0, second=0, microsecond=0)  # Start of today
         end_date = today.replace(hour=23, minute=59, second=59, microsecond=999999)  # End of today
-        expenses = Expense.objects.filter(date__range=[start_date, end_date])
+        expenses = user_expenses.filter(date__range=[start_date, end_date])
 
     context = {
         'expenses': expenses,
@@ -183,16 +185,16 @@ def expense_report(request):
 
 @login_required
 def get_expense_data(request):
-    # Filter expenses for a specific period or get all expenses
-    expenses = Expense.objects.all()
+    # Filter expenses for the logged-in user
+    expenses = Expense.objects.filter(user=request.user)
     categories = {}
-    
-    # Categorize or aggregate expenses by category (or any logic you prefer)
+
+    # Categorize or aggregate expenses by category
     for expense in expenses:
         if expense.category.name not in categories:
             categories[expense.category.name] = 0
         categories[expense.category.name] += expense.amount
-    
+
     # Prepare data for the chart
     data = {
         'labels': list(categories.keys()),  # Categories
@@ -207,10 +209,12 @@ def get_expense_data(request):
 
     return JsonResponse(data)
 
+
 @login_required
 def get_expenses_by_date(request):
-    # Fetch expenses grouped by the exact date
-    expenses_by_date = Expense.objects.values('date') \
+    # Fetch expenses for the logged-in user, grouped by the exact date
+    expenses_by_date = Expense.objects.filter(user=request.user) \
+        .values('date') \
         .annotate(total_expense=Sum('amount')) \
         .order_by('date')  # Order by date to get chronological order
 
@@ -229,6 +233,7 @@ def get_expenses_by_date(request):
         }]
     }
     return JsonResponse(data)
+
 
 
 @login_required
@@ -267,34 +272,40 @@ def savings_dashboard(request):
         defaults={
             'total_income': 0.0,
             'total_expense': 0.0,
-            'current_savings': 0.0,
-            'amount': 0.0  # Ensure 'amount' has a default value
+            'current_savings': 0.0
         }
     )
 
-    # Handling POST requests for depositing or transferring money
+    # Handle POST requests for deposit or transfer actions
     if request.method == "POST":
         action = request.POST.get('action')  # Either 'deposit' or 'transfer'
-        amount = float(request.POST.get('amount', 0))
+        try:
+            amount = float(request.POST.get('amount', 0))
+        except ValueError:
+            return render(request, 'savings.html', {
+                'savings': savings,
+                'error': "Invalid amount entered."
+            })
 
         if action == 'deposit':
             savings.total_income += amount  # Add deposit amount to total_income
         elif action == 'transfer':
             if savings.current_savings >= amount:
-                savings.current_savings -= amount  # Deduct amount for transfer
+                savings.total_expense += amount  # Add amount to total_expense for transfers
             else:
                 return render(request, 'savings.html', {
                     'savings': savings,
                     'error': "Insufficient savings for transfer."
                 })
 
-        # Recalculate current savings based on income and expenses
+        # Update current_savings based on income and expense
         savings.current_savings = savings.total_income - savings.total_expense
-        savings.save()  # Save the updated savings object to the database
+        savings.save()  # Save updates
 
-        return redirect('savings_dashboard')  # Redirect to refresh the savings balance
+        return redirect('savings_dashboard')  # Refresh page after changes
 
-    return render(request, 'savings.html', {'savings': savings})  # Pass updated savings to the template
+    return render(request, 'savings.html', {'savings': savings})
+
 
 
 def deposit_savings(request):

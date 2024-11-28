@@ -18,15 +18,14 @@
             <h1>Add Your Daily Expense</h1>
         </div>
 
-      <!-- Display success message if expense was successfully added -->
-      {% if messages %}
-      <div class="messages">
-          {% for message in messages %}
-              <div class="alert alert-{{ message.tags }}">{{ message }}</div>
-          {% endfor %}
-      </div>
-      {% endif %}
-
+        <!-- Display success message if expense was successfully added -->
+        {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+            {% endfor %}
+        </div>
+        {% endif %}
 
         <div class="form-container background-box">
             <form method="POST" action="{% url 'add_expense' %}">
@@ -43,30 +42,26 @@
                     <label for="category">Category:</label>
                     <select id="category" name="category" required>
                         <option value="">Select a category</option>
-                        <option value="Food">Food</option>
-                        <option value="Education">Education</option>
-                        <option value="Health">Health</option>
-                        <option value="Rent">Rent</option>
-                        <option value="Transport">Transport</option>
-                        <option value="Entertainment">Entertainment</option>
-                        <option value="Other">Other</option>
+                        {% for category in categories %}
+                            <option value="{{ category.id }}">{{ category.name }}</option>
+                        {% endfor %}
                     </select>                    
                 </div>
                 <button type="submit" class="btn btn-primary">Add Expense</button>
             </form>
-            
-            
         </div> <!-- End of form-container -->
+        
         <div class="manage-expense-btn">
             <a href="{% url 'manage_expense' %}" class="btn btn-secondary">Manage Expenses</a>
         </div>
     </div>
+    
     <script>
         document.getElementById('expenseForm').addEventListener('submit', function(event) {
             event.preventDefault();  // Prevent normal form submission
-    
+
             var formData = new FormData(this);
-    
+
             fetch("{% url 'add_expense' %}", {
                 method: 'POST',
                 body: formData,
@@ -86,7 +81,6 @@
             .catch(error => console.error('Error adding expense:', error));
         });
     </script>
-    
-    
+
 </body>
 </html>
