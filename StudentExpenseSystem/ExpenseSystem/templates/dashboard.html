@@ -28,10 +28,12 @@
                     <img src="{% static 'report.png' %}" alt="Expense Report Icon" class="action-icon">
                     <p>Expense Report</p>
                 </a>
-                <div class="action-button savings">
+                
+                <a href="{% url 'savings_dashboard' %}" class="action-button add-expenses">
                     <img src="{% static 'piggy-bank.png' %}" alt="Savings Icon" class="action-icon">
                     <p>Savings</p>
-                </div>
+                </a>
+
                 <a href="{% url 'user_profile' %}" class="action-button add-expenses">
                     <img src="{% static 'bussiness-man.png' %}" alt="User Profile Icon" class="action-icon">
                     <p>User Profile</p>

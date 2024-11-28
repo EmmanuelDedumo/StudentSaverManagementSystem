@@ -22,7 +22,7 @@
                 <img src="{% static 'add_report.png' %}" alt="Expense Report Icon" class="sidebar-icon">
                 <a href="{% url 'expense_report' %}">Expense Report</a>
             </li>
-            <li class="{% if request.resolver_match.url_name == 'savings' %}active{% endif %}">
+            <li class="{% if request.resolver_match.url_name == 'savings_dashboard' %}active{% endif %}">
                 <img src="{% static 'add_savings.png' %}" alt="Savings Icon" class="sidebar-icon">
                 <a href="{% url 'savings_dashboard' %}">Savings</a>
             </li>
