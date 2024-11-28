@@ -1,15 +1,16 @@
 /* Sidebar */
 .sidebar {
-    width: 220px;
-    background-color: #ffffff;
     position: fixed;
-    height: 100%;
-    box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+    top: 50px; /* Navbar height */
+    left: 0;
+    height: calc(100% - 50px); /* Adjust sidebar height */
+    background-color: #ffffff;
+    width: 220px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
     padding: 20px;
-    overflow: hidden;
-    margin-top: 60px; /* Adjust the margin to move content down */
     border-right: 2px solid #ccc;
 }
+
  
 /* Profile Section */
 .profile-section {

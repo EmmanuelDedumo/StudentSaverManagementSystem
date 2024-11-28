@@ -23,9 +23,10 @@ body {
     margin-left: 220px; /* Sidebar width */
     width: calc(100% - 220px); /* Remaining width after sidebar */
     display: flex;
-    justify-content: center;
-    align-items: center;
+    justify-content: center; /* Center horizontally */
+    align-items: flex-start; /* Align at the top */
     padding: 20px;
+    padding-top: 70px; /* Add space below the navbar (50px navbar height + extra spacing) */
 }
 
 /* Savings Dashboard */
@@ -38,7 +39,9 @@ body {
     width: 100%; /* Make the dashboard full width */
     max-width: 600px; /* Optional: Set a max width for responsiveness */
     text-align: center;
+    margin-top: 0; /* Remove extra margin to ensure it's close to the navbar */
 }
+
 
 .savings-header {
     font-size: 24px;

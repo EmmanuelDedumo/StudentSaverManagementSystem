@@ -6,19 +6,24 @@ body {
     padding: 0;
 }
 
-.header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px;
-}
-
-/* Main Dashboard Area */
+/* Move the entire main dashboard content down */
 .main-dashboard {
     margin-left: 250px; /* Sidebar width */
-    background-color: #ecf0f1; 
+    background-color: #ecf0f1;
     padding: 20px;
+    margin-top: 50px; /* Adjust this value to move the content down */
 }
+
+/* Adjust the header if necessary */
+.header {
+    padding: 10px; /* Space inside the header */
+    margin-bottom: 20px; /* Space outside, pushing other elements down */
+}
+
+.header h1 {
+    margin-top: 10px; /* Adjust this value to move the header title down */
+}
+
 
 /* Remove link color and text decoration */
 a {
@@ -26,42 +31,21 @@ a {
     color: inherit; /* Inherit color from parent or set your preferred color */
 }
 
-/* Optional: Remove color on hover */
 a:hover {
     color: inherit; /* Ensure color doesn't change on hover */
 }
 
-/* Optional: Remove color on active state */
 a:active {
     color: inherit; /* Ensure color doesn't change when the link is clicked */
 }
 
-
-.header {
-    font-size: 24px;
-    font-weight: bold;
-    margin-bottom: 20px; /* Space below header */
-}
-
-/* Header Section */
-.header {
-    padding: 20px; /* Space inside the header */
-    margin-bottom: -50px; /* Space outside, pushing other elements down */
-}
-
-.header h1 {
-    margin-top: 80px; /* Adjust this value to move it further down */
-}
-
 /* Action Buttons */
-
-
 .action-buttons {
     display: flex;
     flex-wrap: wrap; /* Allow wrapping for smaller screens */
     justify-content: center; /* Center the buttons */
     gap: 150px; /* Set consistent spacing between buttons */
-    margin-top: 20px;
+    margin-top: 40px; /* Move the action buttons down */
 }
 
 .action-button {
@@ -72,12 +56,11 @@ a:active {
     background-color: #ffffff;
     padding: 10px 20px; /* Adjust vertical padding (top and bottom) */
     border-radius: 20px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     width: 120px;
     text-align: center;
     height: 150px; /* Ensure consistent button height */
 }
-
 
 .action-button img {
     width: 50px;
@@ -94,14 +77,16 @@ a:active {
     background-color: #f1f1f1; /* Hover effect */
 }
 
+/* Background box for sections */
 .background-box {
     background-color: #fff;
     padding: 20px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     border-radius: 10px;
-    margin-top: 30px;
+    margin-top: 50px; /* Move boxes like charts down */
 }
 
+/* Charts Container */
 .charts-container {
     display: flex;
     justify-content: space-between; /* Space between charts */
@@ -109,21 +94,13 @@ a:active {
     flex-wrap: wrap; /* Ensure it wraps on smaller screens */
 }
 
-/* Chart container */
-.charts-container {
-    display: flex;  /* Use flexbox to align charts side by side */
-    justify-content: space-between; /* Add space between charts */
-    gap: 20px; /* Optional: gap between charts */
-    flex-wrap: wrap; /* Allow charts to wrap on smaller screens */
-}
-
 .chart-container {
-    width: 48%;  /* Set to 48% of the container width to fit side by side */
-    margin: 20px 0; /* Optional: add vertical margin between charts */
+    width: 48%; /* Set to 48% of the container width to fit side by side */
+    margin: 20px 0; /* Add vertical margin between charts */
 }
 
 /* Ensure canvas scales correctly */
 canvas {
-    width: 100% !important;  /* Ensures the chart scales to fit its container */
+    width: 100% !important; /* Ensures the chart scales to fit its container */
     height: auto !important; /* Maintain aspect ratio */
 }

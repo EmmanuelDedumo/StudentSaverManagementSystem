@@ -19,13 +19,24 @@
     height: 40px; /* Adjust the size of the logo to make it smaller */
 }
 
+/* Ensure both profile dropdown and piggy-bank icons are inside a flex container */
+.action-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 50px; /* Adjust this value to make sure the buttons (including piggy-bank) have enough space */
+    margin-top: 20px;
+}
+
+/* Profile Dropdown */
 .profile-dropdown {
     position: relative;
-    margin-left: auto; /* Push the profile dropdown to the right */
+    margin-left: auto;
+    align-self: center; /* Ensure the profile dropdown aligns with the piggy-bank */
 }
 
 .profile-icon {
-    width: 30px; /* Adjust the size of the profile icon */
+    width: 30px; 
     height: 30px;
     border-radius: 50%;
     cursor: pointer;
@@ -34,8 +45,8 @@
 .dropdown-content {
     display: none;
     position: absolute;
-    top: 35px; /* Adjust the dropdown position relative to the smaller navbar */
-    right: 0; /* Align the dropdown to the right of the profile icon */
+    top: 35px; /* Adjust the dropdown position relative to the profile icon */
+    right: 0;
     background-color: #fff;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
     z-index: 1;
@@ -43,7 +54,7 @@
 
 .dropdown-content a {
     color: black;
-    padding: 8px 12px; /* Reduce the padding for smaller dropdown items */
+    padding: 8px 12px;
     text-decoration: none;
     display: block;
 }
@@ -54,4 +65,20 @@
 
 .profile-dropdown:hover .dropdown-content {
     display: block;
+}
+
+/* Ensure the piggy-bank icon aligns with profile icon */
+.action-button.savings {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #ffffff;
+    padding: 10px 20px;
+    border-radius: 20px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    width: 120px;
+    text-align: center;
+    height: 150px;
+    position: relative; /* Position relative to align with profile */
 }

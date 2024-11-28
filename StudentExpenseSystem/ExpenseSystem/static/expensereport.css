@@ -5,27 +5,37 @@ body {
     margin: 0;
     padding: 0;
 }
- 
- 
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+}
+
 /* Main dashboard styles */
 .main-dashboard {
     margin-left: 270px; /* Ensure space for sidebar */
     padding: 20px;
     background-color: #f4f4f4; /* Adjust to desired background */
     min-height: 100vh;
+    margin-top: 50px; /* Matches the navbar height */
+    position: relative;
 }
- 
+
+/* Remove gap from the header inside the main dashboard */
 .header h1 {
     font-size: 2em;
-    margin-top: 150px;
+    margin-top: 0; /* Remove extra margin */
+    margin-bottom: 50px; /* Optional spacing */
 }
- 
+
 /* Form container styles */
 .report-filters {
     margin-bottom: 30px;
     text-align: center;
 }
- 
+
 .report-filters select {
     padding: 12px 20px;
     font-size: 16px;
@@ -35,11 +45,11 @@ body {
     color: #333;
     outline: none;
 }
- 
+
 .report-filters select:focus {
     border-color: #3498db;
 }
- 
+
 /* Expense List Table */
 .expense-list {
     background-color: #fff;
@@ -48,53 +58,54 @@ body {
     overflow-x: auto;
     padding: 20px;
 }
- 
+
 .expense-list h2 {
     color: #333;
     font-size: 24px;
     margin-bottom: 20px;
 }
- 
+
 .expense-list table {
     width: 100%;
     border-collapse: collapse;
 }
- 
+
 .expense-list th, .expense-list td {
     padding: 15px;
     text-align: left;
     border-bottom: 1px solid #ddd;
 }
- 
+
 .expense-list th {
     background-color: #3498db;
     color: #fff;
 }
- 
+
 .expense-list td {
     background-color: #f9f9f9;
 }
- 
+
 .expense-list tr:nth-child(even) td {
     background-color: #f2f2f2;
 }
- 
+
 .expense-list tr:hover {
     background-color: #f1f1f1;
 }
- 
+
 .expense-list td.empty {
     text-align: center;
     font-style: italic;
     color: #777;
 }
- 
+
 /* Profile & Dashboard Header */
 .main-dashboard .header {
     margin-bottom: 20px;
+    margin-top: 0; /* Ensure it aligns properly with the navbar */
     text-align: center;
 }
- 
+
 .main-dashboard .header h1 {
     font-size: 32px;
     color: #333;
