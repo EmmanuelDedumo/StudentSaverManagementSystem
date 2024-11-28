@@ -109,7 +109,7 @@ def add_expense(request):
         else:
             messages.warning(request, 'This expense already exists.')
 
-        return redirect('manage_expense')  # Redirect to the expense management page
+        return redirect('dashboard')  # Redirect to the expense management page
 
     categories = Category.objects.all()  # Retrieve all categories for the select dropdown
     return render(request, 'addexpense.html', {'categories': categories})
@@ -293,7 +293,6 @@ def user_profile(request):
         user_profile.save()
 
         # Return success message
-        messages.success(request, "Profile updated successfully!")
         return redirect('user_profile')
 
     return render(request, 'user_profile.html')
