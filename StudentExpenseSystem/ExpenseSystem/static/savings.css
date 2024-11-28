@@ -39,7 +39,7 @@ body {
     width: 100%; /* Make the dashboard full width */
     max-width: 600px; /* Optional: Set a max width for responsiveness */
     text-align: center;
-    margin-top: 0; /* Remove extra margin to ensure it's close to the navbar */
+    margin-top: 20px; /* Remove extra margin to ensure it's close to the navbar */
 }
 
 
