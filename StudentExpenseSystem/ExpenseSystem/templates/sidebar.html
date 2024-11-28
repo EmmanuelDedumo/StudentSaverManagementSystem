@@ -2,7 +2,8 @@
 <div class="sidebar">
     <div class="profile-section">
         <link rel="stylesheet" href="{% static 'sidebar.css' %}">
-        <img src="{% static 'default_profile.png' %}" alt="Profile Picture" />
+        <!-- Profile Picture will update here -->
+        <img src="{% if user.profile.profile_picture %}{{ user.profile.profile_picture.url }}{% else %}{% static 'default_profile.png' %}{% endif %}" alt="User Profile" class="profile-icon" id="profile-picture">
         <h3>{{ user.username }}</h3>
         <p>{{ user.email }}</p>
     </div>
@@ -41,3 +42,26 @@
         </ul>
     </div>
 </div>
+
+<!-- JavaScript to update profile picture in real-time -->
+<script>
+    function updateProfilePicture(event) {
+        event.preventDefault();
+
+        var form = document.getElementById('profile-form'); // Assuming you have a form with this ID
+        var formData = new FormData(form);
+
+        fetch("{% url 'user_profile' %}", {
+            method: "POST",
+            body: formData,
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Update the profile picture in the sidebar without refreshing
+            document.getElementById('profile-picture').src = data.profile_picture_url;
+        })
+        .catch(error => {
+            console.log("Error updating profile:", error);
+        });
+    }
+</script>

@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
+import requests
 from ExpenseSystem.models import Expense, Savings, Category
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
@@ -19,6 +20,14 @@ from django.db.models import Sum
 from django.utils import timezone
 from .models import Savings
 from .forms import DepositForm
+from .models import Profile
+from django.core.files.base import ContentFile
+from .utils import save_profile_picture_from_url
+from io import BytesIO
+import logging
+from django.core.files.storage import FileSystemStorage
+from django.http import JsonResponse
+
 
 
 
@@ -140,10 +149,6 @@ def delete_expense(request, id):
     
     return render(request, 'delete_expense.html', {'expense': expense})
 
-from django.utils import timezone
-from datetime import timedelta
-from django.shortcuts import render
-from .models import Expense  # Make sure to import your Expense model
 
 @login_required
 def expense_report(request):
@@ -234,34 +239,42 @@ def get_expenses_by_date(request):
     }
     return JsonResponse(data)
 
-
+logger = logging.getLogger(__name__)
 
 @login_required
 def user_profile(request):
-    if request.method == "POST":
-        # Get the current user
-        user = request.user
+    if request.method == 'POST':
+        # Get user profile
+        user_profile = request.user.profile
+        username = request.POST.get('username')
+        first_name = request.POST.get('first_name')
+        last_name = request.POST.get('last_name')
+        email = request.POST.get('email')
+        password = request.POST.get('password')
 
-        # Update user details
-        user.username = request.POST.get("username")
-        user.first_name = request.POST.get("first_name")
-        user.last_name = request.POST.get("last_name")
-        user.email = request.POST.get("email")
+        # Update profile info
+        if username:
+            request.user.username = username
+        if first_name:
+            request.user.first_name = first_name
+        if last_name:
+            request.user.last_name = last_name
+        if email:
+            request.user.email = email
+        if password:
+            request.user.set_password(password)
 
         # Handle profile picture upload
-        if 'profile_picture' in request.FILES:
-            user.profile.profile_picture = request.FILES['profile_picture']
-            user.profile.save()
+        if request.FILES.get('profile_picture'):
+            profile_picture = request.FILES['profile_picture']
+            user_profile.profile_picture = profile_picture
 
-        # Handle password change
-        if request.POST.get("password"):
-            user.set_password(request.POST.get("password"))
-            user.save()
+        # Save user and profile changes
+        request.user.save()
+        user_profile.save()
 
-        # Save user details
-        user.save()
-
-        return redirect('user_profile')  # Redirect to the same page after saving
+        messages.success(request, "Profile updated successfully!")
+        return redirect('user_profile')  # Redirect to the profile page
 
     return render(request, 'user_profile.html')
 
@@ -347,3 +360,11 @@ def deposit_savings(request):
     
     return render(request, 'deposit_savings.html', {'savings': savings})  # Render deposit page
 
+
+def save_profile_picture_from_url(user, image_url):
+    response = requests.get(image_url)
+    if response.status_code == 200:
+        # Extract the file name from the URL
+        file_name = image_url.split("/")[-1]
+        # Save the image to the user's profile
+        user.profile.profile_picture.save(file_name, ContentFile(response.content), save=True)
