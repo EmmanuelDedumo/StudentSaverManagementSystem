@@ -25,8 +25,9 @@
             <!-- Profile Picture Section -->
             <div class="profile-picture-section">
                 <img id="profile_picture_preview" 
-                src="{% if user.profile.profile_picture %}{{ user.profile.profile_picture.url }}{% else %}{% static 'default_profile.png' %}{% endif %}" 
-                alt="" class="profile-picture">
+     src="{% if user.profile.profile_picture %}{{ user.profile.profile_picture.url }}{% else %}{% static 'default_profile.png' %}{% endif %}" 
+     alt="Profile Picture" class="profile-picture">
+
                 <div class="profile-actions">
                     <input type="file" id="profile_picture_input" name="profile_picture" accept="image/*" style="display: none;" onchange="previewImage(event)">
                     <button type="button" class="btn btn-upload" onclick="document.getElementById('profile_picture_input').click()">Change Picture</button>
