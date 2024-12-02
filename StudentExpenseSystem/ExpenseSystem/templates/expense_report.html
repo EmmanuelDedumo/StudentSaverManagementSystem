@@ -20,10 +20,10 @@
         <div class="report-filters">
             <form method="GET" action="{% url 'expense_report' %}">
                 <select name="filter" onchange="this.form.submit()">
+                    <option value="today" {% if filter == 'today' %}selected{% endif %}>Today</option>
                     <option value="weekly" {% if filter == 'weekly' %}selected{% endif %}>This Week</option>
                     <option value="monthly" {% if filter == 'monthly' %}selected{% endif %}>This Month</option>
                     <option value="yearly" {% if filter == 'yearly' %}selected{% endif %}>This Year</option>
-                    <option value="today" {% if filter == 'today' %}selected{% endif %}>Today</option>
                 </select>
             </form>
         </div>

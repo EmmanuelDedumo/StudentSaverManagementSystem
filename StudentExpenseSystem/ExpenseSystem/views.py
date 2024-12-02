@@ -28,7 +28,7 @@ import logging
 from django.core.files.storage import FileSystemStorage
 from django.http import JsonResponse
 from django.core.files.storage import default_storage
-from dateutil.relativedelta import relativedelta
+
 
 
 
@@ -53,6 +53,8 @@ def logout_view(request):
 
 def register_view(request):
     if request.method == "POST":
+        first_name = request.POST['first_name']
+        last_name = request.POST['last_name']
         username = request.POST['username']
         email = request.POST['email']
         password = request.POST['password']
@@ -61,19 +63,26 @@ def register_view(request):
         if password != confirm_password:
             messages.error(request, "Passwords do not match.")
             return render(request, "register.html")
-        
+
         if User.objects.filter(username=username).exists():
             messages.error(request, "Username already exists.")
             return render(request, "register.html")
-        
+
         if User.objects.filter(email=email).exists():
             messages.error(request, "Email is already in use.")
             return render(request, "register.html")
-        
-        # Create user
-        User.objects.create_user(username=username, email=email, password=password)
+
+        # Create user with first name and last name
+        user = User.objects.create_user(
+            username=username,
+            email=email,
+            password=password,
+            first_name=first_name,
+            last_name=last_name
+        )
+        messages.success(request, "Account created successfully. Please log in.")
         return redirect('login')
-    
+
     return render(request, "register.html")
 
 def home(request):
@@ -171,7 +180,8 @@ def expense_report(request):
 
     elif filter_type == 'monthly':
         start_date = today.replace(day=1)  # Start of the month
-        end_date = (start_date + relativedelta(months=1)) - timedelta(days=1)  # End of the month
+        _, last_day = calendar.monthrange(today.year, today.month)  # Get the last day of the month
+        end_date = today.replace(day=last_day)  # End of the month
         expenses = user_expenses.filter(date__range=[start_date, end_date])
 
     elif filter_type == 'yearly':
@@ -252,52 +262,36 @@ def user_profile(request):
         # Get the user profile
         user_profile = request.user.profile
 
-        # Check if we need to delete the profile picture
+        # Check for delete profile picture
         if 'delete_profile_picture' in request.POST:
-            # Delete the profile picture from storage if it exists
             if user_profile.profile_picture:
                 picture_path = user_profile.profile_picture.path
                 if default_storage.exists(picture_path):
                     default_storage.delete(picture_path)
-                    print(f"Profile picture {picture_path} deleted.")  # Debugging log
                 user_profile.profile_picture = None
                 user_profile.save()
-
-            # Return a JSON response indicating the picture has been deleted
             return JsonResponse({'status': 'success', 'message': 'Profile picture deleted and reset'})
 
-        # If no delete request, handle other profile updates (username, email, etc.)
-        username = request.POST.get('username')
-        first_name = request.POST.get('first_name')
-        last_name = request.POST.get('last_name')
-        email = request.POST.get('email')
-        password = request.POST.get('password')
+        # Update profile details
+        request.user.username = request.POST.get('username', request.user.username)
+        request.user.first_name = request.POST.get('first_name', request.user.first_name)
+        request.user.last_name = request.POST.get('last_name', request.user.last_name)
+        request.user.email = request.POST.get('email', request.user.email)
 
-        # Update profile info
-        if username:
-            request.user.username = username
-        if first_name:
-            request.user.first_name = first_name
-        if last_name:
-            request.user.last_name = last_name
-        if email:
-            request.user.email = email
-        if password:
+        if password := request.POST.get('password'):
             request.user.set_password(password)
 
-        # Handle profile picture upload
-        if request.FILES.get('profile_picture'):
-            profile_picture = request.FILES['profile_picture']
+        if profile_picture := request.FILES.get('profile_picture'):
             user_profile.profile_picture = profile_picture
 
-        # Save user and profile changes
         request.user.save()
         user_profile.save()
-
-        # Return success message
         return redirect('user_profile')
 
-    return render(request, 'user_profile.html')
+    # Render profile page with user details pre-filled
+    return render(request, 'user_profile.html', {
+        'user': request.user
+    })
 
 def savings_dashboard(request):
     # Retrieve or create the savings object for the current user
