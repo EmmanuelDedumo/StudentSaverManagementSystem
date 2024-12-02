@@ -28,6 +28,8 @@ import logging
 from django.core.files.storage import FileSystemStorage
 from django.http import JsonResponse
 from django.core.files.storage import default_storage
+from dateutil.relativedelta import relativedelta
+
 
 
 
@@ -169,7 +171,7 @@ def expense_report(request):
 
     elif filter_type == 'monthly':
         start_date = today.replace(day=1)  # Start of the month
-        end_date = (today.replace(month=today.month + 1, day=1) - timedelta(days=1))  # End of the month
+        end_date = (start_date + relativedelta(months=1)) - timedelta(days=1)  # End of the month
         expenses = user_expenses.filter(date__range=[start_date, end_date])
 
     elif filter_type == 'yearly':
