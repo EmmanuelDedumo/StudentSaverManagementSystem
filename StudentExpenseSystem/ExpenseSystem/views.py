@@ -28,6 +28,9 @@ import logging
 from django.core.files.storage import FileSystemStorage
 from django.http import JsonResponse
 from django.core.files.storage import default_storage
+from .forms import SavingsGoalForm
+from .models import SavingsGoal
+
 
 
 
@@ -304,6 +307,9 @@ def savings_dashboard(request):
         }
     )
 
+    # Retrieve the user's savings goals
+    savings_goals = SavingsGoal.objects.filter(user=request.user)
+
     # Handle POST requests for deposit or transfer actions
     if request.method == "POST":
         action = request.POST.get('action')  # Either 'deposit' or 'transfer'
@@ -312,6 +318,7 @@ def savings_dashboard(request):
         except ValueError:
             return render(request, 'savings.html', {
                 'savings': savings,
+                'savings_goals': savings_goals,
                 'error': "Invalid amount entered."
             })
 
@@ -323,6 +330,7 @@ def savings_dashboard(request):
             else:
                 return render(request, 'savings.html', {
                     'savings': savings,
+                    'savings_goals': savings_goals,
                     'error': "Insufficient savings for transfer."
                 })
 
@@ -332,7 +340,8 @@ def savings_dashboard(request):
 
         return redirect('savings_dashboard')  # Refresh page after changes
 
-    return render(request, 'savings.html', {'savings': savings})
+    return render(request, 'savings.html', {'savings': savings, 'savings_goals': savings_goals})
+
 
 
 
@@ -394,3 +403,40 @@ def delete_profile_picture(request):
         profile.save()  # Save the changes
         return JsonResponse({"success": True})
     return JsonResponse({"error": "Invalid request method"}, status=400)
+
+
+@login_required
+def add_savings_goal(request):
+    if request.method == 'POST':
+        form = SavingsGoalForm(request.POST)
+        if form.is_valid():
+            savings_goal = form.save(commit=False)
+            savings_goal.user = request.user  # Link the goal to the logged-in user
+            savings_goal.save()
+            return redirect('savings_dashboard')  # Redirect after saving
+    else:
+        form = SavingsGoalForm()
+
+    return render(request, 'add_savings_goal.html', {'form': form})
+
+def save_savings_goal(request):
+    if request.method == 'POST':
+        # Extract form data
+        name = request.POST.get('name')  # Corrected field name
+        target_amount = request.POST.get('target_amount')
+        description = request.POST.get('description')
+
+        # Save data to the database
+        savings_goal = SavingsGoal(
+            name=name,  # Use 'name' instead of 'goal_name'
+            target_amount=target_amount,
+            description=description,
+            user=request.user  # Link goal to the logged-in user
+        )
+        savings_goal.save()
+
+        # Redirect to the savings dashboard after saving
+        return redirect('savings_dashboard')
+
+    # Redirect back to the form if the request is not POST
+    return redirect('add-savings-goal')

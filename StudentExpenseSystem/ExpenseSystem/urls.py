@@ -3,9 +3,6 @@ from ExpenseSystem import views
 from django.conf.urls.static import static
 from django.conf import settings
 
-
-
-
 urlpatterns = [
     path('', views.home, name='home'),  # Home page
     path('login/', views.login_view, name='login'),
@@ -17,13 +14,16 @@ urlpatterns = [
     path('edit_expense/<int:id>/', views.edit_expense, name='edit_expense'),
     path('delete_expense/<int:id>/', views.delete_expense, name='delete_expense'),
     path('expense-report/', views.expense_report, name='expense_report'),
-    path('get-expense-data/', views.get_expense_data, name='get_expense_data'),  # add this line
+    path('get-expense-data/', views.get_expense_data, name='get_expense_data'),
     path('date-expenses/', views.get_expenses_by_date, name='get_expenses_by_date'),
     path('profile/', views.user_profile, name='user_profile'),
     path('savings/', views.savings_dashboard, name='savings_dashboard'),
     path('deposit/', views.deposit_savings, name='deposit_savings'),
+    path('add-savings-goal/', views.add_savings_goal, name='add_savings_goal'),
     path('delete-profile-picture/', views.delete_profile_picture, name='delete_profile_picture'),
-    
+    path('save-savings-goal/', views.save_savings_goal, name='save_savings_goal'),
+
+
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 if settings.DEBUG:

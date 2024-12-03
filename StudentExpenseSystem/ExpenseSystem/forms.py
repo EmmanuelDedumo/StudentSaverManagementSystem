@@ -3,6 +3,7 @@
 from django import forms
 from ExpenseSystem.models import Expense, UserProfile  # Make sure you import the Expense model
 from django.contrib.auth.models import User
+from .models import SavingsGoal
 
 class UserRegisterForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput)
@@ -32,3 +33,8 @@ class UserProfileForm(forms.ModelForm):
 
 class DepositForm(forms.Form):
     amount = forms.DecimalField(max_digits=10, decimal_places=2, min_value=0.01, label="Deposit Amount")
+
+class SavingsGoalForm(forms.ModelForm):
+    class Meta:
+        model = SavingsGoal
+        fields = ['name', 'target_amount', 'description']

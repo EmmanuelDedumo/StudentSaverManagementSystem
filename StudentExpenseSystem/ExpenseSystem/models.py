@@ -50,4 +50,14 @@ class Profile(models.Model):
     def __str__(self):
         return f'{self.user.username} Profile'
     
+class SavingsGoal(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    name = models.CharField(max_length=255)  # Field for goal name
+    target_amount = models.DecimalField(max_digits=10, decimal_places=2)  # Field for target amount
+    description = models.TextField(blank=True, null=True)  # Optional description
+
+    def __str__(self):
+        return self.name
+    
+    
 

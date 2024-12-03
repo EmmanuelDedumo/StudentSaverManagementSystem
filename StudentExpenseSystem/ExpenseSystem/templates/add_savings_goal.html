@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Savings Goal</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'add_savings_goal.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    {% include 'navbar.html' %}
+    {% include 'sidebar.html' %}
+
+    <div class="main-content">
+        <div class="form-container">
+            <h2>Add Savings Goal</h2>
+            <form method="post" action="{% url 'save_savings_goal' %}">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="id_name">Goal Name</label> <!-- Updated for the correct field -->
+                    {{ form.name }} <!-- Updated for the correct field -->
+                </div>
+                <div class="form-group">
+                    <label for="id_target_amount">Target Amount (₱)</label>
+                    {{ form.target_amount }}
+                </div>
+                <div class="form-group">
+                    <label for="id_description">Description (Optional)</label>
+                    {{ form.description }}
+                </div>
+                <div class="button-container">
+                    <button type="submit" class="button">Save Goal</button>
+                    <a href="{% url 'savings_dashboard' %}" class="button cancel-button">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</body>
+</html>

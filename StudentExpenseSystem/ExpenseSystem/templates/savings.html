@@ -29,6 +29,30 @@
                 <button class="button">Transfer</button>
             </div>
         </div>
+        
+        <!-- Add Savings Goal Button -->
+        <div class="add-goal-container">
+            <a href="{% url 'add_savings_goal' %}" class="button add-goal-button">Add Savings Goal</a>
+        </div>
+
+        <!-- Display Savings Goals -->
+        <div class="goals-container">
+            <h3>Your Savings Goals</h3>
+            <ul>
+                {% for goal in savings_goals %}
+                    <li>
+                        <div class="goal-name">{{ goal.name }}</div>
+                        <div class="goal-target-amount">Target: ₱{{ goal.target_amount|floatformat:2 }}</div>
+                        {% if goal.description %}
+                            <div class="goal-description">{{ goal.description }}</div>
+                        {% endif %}
+                    </li>
+                {% empty %}
+                    <p>You don't have any savings goals yet. Start by adding one!</p>
+                {% endfor %}
+            </ul>
+        </div>
+
     </div>
 
     <script>
@@ -36,20 +60,19 @@
         let actualBalance = "{{ savings.current_savings|floatformat:2 }}";  // Actual balance from Django template
 
         function toggleBalance() {
-    const balanceElement = document.getElementById('balance');
-    const eyeIcon = document.getElementById('eye-icon');
+            const balanceElement = document.getElementById('balance');
+            const eyeIcon = document.getElementById('eye-icon');
 
-    if (isHidden) {
-        balanceElement.textContent = actualBalance; // Show actual balance
-        eyeIcon.src = "{% static 'openeye.png' %}"; // Eye open icon
-        isHidden = false;
-    } else {
-        balanceElement.textContent = "•".repeat(actualBalance.length); // Hide balance with dots
-        eyeIcon.src = "{% static 'openhide.png' %}"; // Eye hide icon
-        isHidden = true;
-    }
-}
-
+            if (isHidden) {
+                balanceElement.textContent = actualBalance; // Show actual balance
+                eyeIcon.src = "{% static 'openeye.png' %}"; // Eye open icon
+                isHidden = false;
+            } else {
+                balanceElement.textContent = "•".repeat(actualBalance.length); // Hide balance with dots
+                eyeIcon.src = "{% static 'openhide.png' %}"; // Eye hide icon
+                isHidden = true;
+            }
+        }
     </script>
 </body>
 </html>
