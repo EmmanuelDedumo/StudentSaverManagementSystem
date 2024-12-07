@@ -18,8 +18,8 @@
             <form method="post" action="{% url 'save_savings_goal' %}">
                 {% csrf_token %}
                 <div class="form-group">
-                    <label for="id_name">Goal Name</label> <!-- Updated for the correct field -->
-                    {{ form.name }} <!-- Updated for the correct field -->
+                    <label for="id_name">Goal Name</label>
+                    {{ form.name }}
                 </div>
                 <div class="form-group">
                     <label for="id_target_amount">Target Amount (₱)</label>
@@ -36,6 +36,5 @@
             </form>
         </div>
     </div>
-
 </body>
 </html>
