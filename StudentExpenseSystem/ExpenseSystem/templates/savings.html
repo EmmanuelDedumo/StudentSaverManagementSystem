@@ -14,6 +14,11 @@
     {% include 'sidebar.html' %}
 
     <div class="main-content">
+        <!-- Add Savings Goal Button (moved to the top) -->
+        <div class="add-goal-container">
+            <a href="{% url 'add_savings_goal' %}" class="button add-goal-button">Add Savings Goal</a>
+        </div>
+
         <div class="savings-container">
             <div class="savings-header">SAVINGS</div>
             <div class="savings-balance">
@@ -29,21 +34,19 @@
                 <button class="button">Transfer</button>
             </div>
         </div>
-        
-        <!-- Add Savings Goal Button -->
-        <div class="add-goal-container">
-            <a href="{% url 'add_savings_goal' %}" class="button add-goal-button">Add Savings Goal</a>
-        </div>
 
-        <!-- Display Savings Goals -->
+            <!-- Display Savings Goals -->
         <div class="goals-container">
             <h3>Your Savings Goals</h3>
             <ul>
                 {% for goal in savings_goals %}
-                    <li>
+                    <li class="goal-item">
+                        <div class="goal-header">Goal Name:</div>
                         <div class="goal-name">{{ goal.name }}</div>
-                        <div class="goal-target-amount">Target: ₱{{ goal.target_amount|floatformat:2 }}</div>
+                        <div class="goal-header">Target Amount:</div>
+                        <div class="goal-target-amount">₱{{ goal.target_amount|floatformat:2 }}</div>
                         {% if goal.description %}
+                            <div class="goal-header">Description:</div>
                             <div class="goal-description">{{ goal.description }}</div>
                         {% endif %}
                     </li>
@@ -52,7 +55,6 @@
                 {% endfor %}
             </ul>
         </div>
-
     </div>
 
     <script>
