@@ -38,3 +38,8 @@ class SavingsGoalForm(forms.ModelForm):
     class Meta:
         model = SavingsGoal
         fields = ['name', 'target_amount', 'description']
+
+class TransferForm(forms.Form):
+    recipient_name = forms.CharField(max_length=255, label="Recipient Name")
+    amount = forms.FloatField(min_value=0.01, label="Transfer Amount")
+    notes = forms.CharField(widget=forms.Textarea, required=False, label="Notes")

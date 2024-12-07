@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transfer Savings</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'savings.css' %}">
+</head>
+<body>
+    {% include 'navbar.html' %}
+    {% include 'sidebar.html' %}
+
+    <div class="main-content">
+        <h2>Transfer Savings</h2>
+
+        <!-- Display error message if there is insufficient savings -->
+        {% if error %}
+            <div class="error-message">{{ error }}</div>
+        {% endif %}
+
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="button">Transfer</button>
+        </form>
+    </div>
+</body>
+</html>

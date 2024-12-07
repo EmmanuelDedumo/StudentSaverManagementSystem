@@ -22,6 +22,7 @@ urlpatterns = [
     path('add-savings-goal/', views.add_savings_goal, name='add_savings_goal'),
     path('delete-profile-picture/', views.delete_profile_picture, name='delete_profile_picture'),
     path('save-savings-goal/', views.save_savings_goal, name='save_savings_goal'),
+    path('transfer/', views.transfer_savings, name='transfer_savings'),
 
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

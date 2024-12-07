@@ -28,7 +28,7 @@ import logging
 from django.core.files.storage import FileSystemStorage
 from django.http import JsonResponse
 from django.core.files.storage import default_storage
-from .forms import SavingsGoalForm
+from .forms import SavingsGoalForm, TransferForm
 from .models import SavingsGoal
 
 
@@ -300,48 +300,13 @@ def savings_dashboard(request):
     # Retrieve or create the savings object for the current user
     savings, created = Savings.objects.get_or_create(
         user=request.user,
-        defaults={
-            'total_income': 0.0,
-            'total_expense': 0.0,
-            'current_savings': 0.0
-        }
+        defaults={'total_income': 0.0, 'total_expense': 0.0, 'current_savings': 0.0}
     )
 
     # Retrieve the user's savings goals
     savings_goals = SavingsGoal.objects.filter(user=request.user)
 
-    # Handle POST requests for deposit or transfer actions
-    if request.method == "POST":
-        action = request.POST.get('action')  # Either 'deposit' or 'transfer'
-        try:
-            amount = float(request.POST.get('amount', 0))
-        except ValueError:
-            return render(request, 'savings.html', {
-                'savings': savings,
-                'savings_goals': savings_goals,
-                'error': "Invalid amount entered."
-            })
-
-        if action == 'deposit':
-            savings.total_income += amount  # Add deposit amount to total_income
-        elif action == 'transfer':
-            if savings.current_savings >= amount:
-                savings.total_expense += amount  # Add amount to total_expense for transfers
-            else:
-                return render(request, 'savings.html', {
-                    'savings': savings,
-                    'savings_goals': savings_goals,
-                    'error': "Insufficient savings for transfer."
-                })
-
-        # Update current_savings based on income and expense
-        savings.current_savings = savings.total_income - savings.total_expense
-        savings.save()  # Save updates
-
-        return redirect('savings_dashboard')  # Refresh page after changes
-
     return render(request, 'savings.html', {'savings': savings, 'savings_goals': savings_goals})
-
 
 
 
@@ -440,3 +405,35 @@ def save_savings_goal(request):
 
     # Redirect back to the form if the request is not POST
     return redirect('add-savings-goal')
+
+@login_required
+def transfer_savings(request):
+    savings = Savings.objects.get(user=request.user)
+    form = TransferForm()
+
+    if request.method == 'POST':
+        form = TransferForm(request.POST)
+        if form.is_valid():
+            recipient_name = form.cleaned_data['recipient_name']
+            amount = form.cleaned_data['amount']
+            notes = form.cleaned_data['notes']
+
+            # Ensure the user has enough savings to make the transfer
+            if savings.balance >= amount:  # Use 'balance' property to check if enough funds are available
+                # Deduct the transfer amount from the total_expense
+                savings.total_expense += amount
+                savings.save()  # Save the updated savings
+
+                # Optionally, you could log the transfer details to a Transfer model (not shown here)
+                # Transfer.objects.create(user=request.user, recipient_name=recipient_name, amount=amount, notes=notes)
+
+                # Redirect back to the savings dashboard
+                return redirect('savings_dashboard')
+            else:
+                # If there are insufficient funds, show an error
+                return render(request, 'transfer.html', {
+                    'form': form,
+                    'error': "Insufficient savings for transfer."
+                })
+
+    return render(request, 'transfer.html', {'form': form})

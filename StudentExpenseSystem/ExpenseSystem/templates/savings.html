@@ -23,15 +23,12 @@
             <div class="savings-header">SAVINGS</div>
             <div class="savings-balance">
                 <span>₱</span>
-                <span id="balance">{{ savings.current_savings|floatformat:2 }}</span> <!-- Show actual balance dynamically -->
-                <a href="#" onclick="toggleBalance()">
-                    <img id="eye-icon" class="eye-icon" src="{% static 'openeye.png' %}">
-                </a>
-            </div>            
+                <span id="balance">{{ savings.balance|floatformat:2 }}</span> <!-- Use the balance property -->
+            </div>         
             <div class="savings-info">3% p.a for savings up to ₱5,000</div>
             <div class="button-container">
                 <a href="{% url 'deposit_savings' %}" class="button">Deposit</a>
-                <button class="button">Transfer</button>
+                <a href="{% url 'transfer_savings' %}" class="button">Transfer</a>
             </div>
         </div>
 
