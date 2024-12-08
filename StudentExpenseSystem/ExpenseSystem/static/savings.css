@@ -180,49 +180,58 @@ body {
     }
 }
 
-.goal-actions {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 10px;
-}
-
-.goal-actions-horizontal {
-    display: flex; /* Use flexbox for horizontal alignment */
-    justify-content: flex-end; /* Align buttons to the right */
-    gap: 10px; /* Add space between the buttons */
-    margin-top: 10px;
-}
-
-.edit-button {
-    background-color: #28a745; /* Green for Edit */
+/* Manage Savings Button */
+.manage-button {
+    background-color: #17a2b8; /* Teal color for manage */
     color: white;
-    padding: 8px 15px;
+    padding: 10px 20px;
     text-decoration: none;
     border-radius: 4px;
     font-size: 14px;
+    font-weight: 600;
     cursor: pointer;
     display: inline-block;
+    text-align: center;
+    transition: background-color 0.3s;
 }
 
-.edit-button:hover {
-    background-color: #218838;
+.manage-button:hover {
+    background-color: #138496;
+}
+
+.button-container {
+    display: flex;
+    justify-content: center; /* Align buttons in the center */
+    gap: 20px; /* Add space between buttons */
+    margin-top: 20px; /* Optional: add top margin for spacing */
+}
+
+.button {
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border: none;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+.save-button {
+    background-color: green;
+    color: white;
 }
 
 .delete-button {
-    background-color: #dc3545; /* Red for Delete */
+    background-color: red;
     color: white;
-    padding: 8px 15px;
-    border: none;
-    border-radius: 4px;
-    font-size: 14px;
-    cursor: pointer;
-    display: inline-block;
+}
+
+.save-button:hover {
+    background-color: darkgreen;
 }
 
 .delete-button:hover {
-    background-color: #c82333;
+    background-color: darkred;
 }
 
-.delete-form {
-    margin: 0; /* Remove default margin for inline forms */
-}
+
+

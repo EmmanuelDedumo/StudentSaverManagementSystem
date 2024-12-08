@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Savings Goal</title>
+    <title>Manage Savings Goal</title>
     {% load static %}
     <link rel="stylesheet" href="{% static 'savings.css' %}">
 </head>
@@ -12,12 +12,21 @@
     {% include 'sidebar.html' %}
 
     <div class="main-content">
-        <h2>Edit Savings Goal</h2>
-        <form method="POST">
+        <h2>Manage Savings Goal</h2>
+        <form method="POST" class="form-save">
             {% csrf_token %}
             {{ form.as_p }}
-            <button type="submit" class="button">Save Changes</button>
+            <div class="button-container">
+                <button type="submit" class="button save-button">Save Changes</button>
+            </div>
         </form>
+        <div class="button-container">
+            <form method="POST" action="{% url 'delete_savings_goal' goal.id %}" class="form-delete">
+                {% csrf_token %}
+                <button type="submit" class="button delete-button">Delete Goal</button>
+            </form>
+        </div>
     </div>
+    
 </body>
 </html>
