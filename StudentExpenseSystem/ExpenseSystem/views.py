@@ -367,22 +367,20 @@ def savings_dashboard(request):
 
 
 
-
 def deposit_savings(request):
-    # Retrieve the user's savings object
     savings = Savings.objects.get(user=request.user)
-    
+
     if request.method == "POST":
         action = request.POST.get('action')
         amount = request.POST.get('amount')
 
         try:
-            # Convert the amount to a float and round it to two decimal places
             amount = float(amount)
-            amount = round(amount, 2)  # Round to 2 decimal places for precision
+            amount = round(amount, 2)
 
             if action == 'deposit':
-                savings.total_income += amount
+                savings.total_income += amount  # Add to total income
+                savings.current_savings += amount  # Add to current savings
             elif action == 'transfer':
                 if savings.current_savings >= amount:
                     savings.current_savings -= amount
@@ -391,12 +389,10 @@ def deposit_savings(request):
                         'savings': savings,
                         'error': "Insufficient savings for transfer."
                     })
-            
+
             # Recalculate current savings based on income and expenses
-            savings.current_savings = savings.total_income - savings.total_expense
             savings.save()
-            
-            # After deposit, redirect back to the savings dashboard
+
             return redirect('savings_dashboard')
 
         except ValueError:
@@ -404,8 +400,7 @@ def deposit_savings(request):
                 'savings': savings,
                 'error': "Invalid amount entered. Please enter a valid number."
             })
-    
-    return render(request, 'deposit_savings.html', {'savings': savings})  # Render deposit page
+    return render(request, 'deposit_savings.html', {'savings': savings})
 
 
 
@@ -459,31 +454,21 @@ def save_savings_goal(request):
     return redirect('add-savings-goal')
 
 
-logger = logging.getLogger(__name__)
-
 @login_required
 def edit_savings_goal(request, goal_id):
-    # Retrieve the savings goal object or return a 404 if not found
     savings_goal = get_object_or_404(SavingsGoal, id=goal_id, user=request.user)
 
-    # Handle form submission when the request method is POST
     if request.method == 'POST':
         form = SavingsGoalForm(request.POST, instance=savings_goal)
         if form.is_valid():
-            form.save()  # Save the changes to the database
-            messages.success(request, "Savings goal updated successfully.")  # Optional: display a success message
-            return redirect('savings_dashboard')  # Redirect to the dashboard after saving
-        else:
-            # Optional: Log or display errors if the form is not valid
-            messages.error(request, "There were errors in your form. Please check and try again.")
-
-    # Handle GET request (display the form)
+            form.save()
+            return redirect('savings_dashboard')  # Redirect after saving
     else:
         form = SavingsGoalForm(instance=savings_goal)
-        form.fields['current_amount'].widget = forms.HiddenInput()  # Hide the 'current_amount' field if needed
+        form.fields['current_amount'].widget = forms.HiddenInput()  # Hide the field
 
-    # Render the form template
     return render(request, 'edit_savings_goal.html', {'form': form, 'goal': savings_goal})
+
 
 
 @login_required
@@ -549,3 +534,11 @@ def transfer_savings(request):
         'form': form,
         'savings_goals': savings_goals
     })
+
+@login_required
+def get_savings_balance(request):
+    try:
+        savings = Savings.objects.get(user=request.user)
+        return JsonResponse({'balance': float(savings.current_savings)}, status=200)
+    except Savings.DoesNotExist:
+        return JsonResponse({'error': 'Savings data not found'}, status=404)

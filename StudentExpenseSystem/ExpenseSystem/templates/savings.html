@@ -86,14 +86,28 @@
         }
 
         function refreshBalance() {
-            fetch('/get-savings-balance')
-                .then(response => response.json())
-                .then(data => {
-                    document.getElementById('balance').textContent = '₱' + data.balance;
-                    actualBalance = data.balance;
-                })
-                .catch(error => console.error('Error:', error));
-        }
+        fetch('/get-savings-balance')
+            .then(response => response.json())
+            .then(data => {
+                if (data.balance !== undefined) {
+                    const balanceElement = document.getElementById('balance');
+                    balanceElement.textContent = '₱' + parseFloat(data.balance).toFixed(2);
+                    actualBalance = parseFloat(data.balance).toFixed(2);
+                } else {
+                    console.error('Error fetching balance:', data.error);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }
+
+    // Call refreshBalance after an action like deposit or transfer
+    document.querySelector('.action-button').addEventListener('click', refreshBalance);
+
+
+
+
     </script>
 </body>
 </html>
