@@ -33,6 +33,8 @@ urlpatterns = [
     path('delete_expense/<int:id>/', views.delete_expense, name='delete_expense'),
     path('savings/', views.savings_dashboard, name='savings_dashboard'),
     path('deposit/', views.deposit_savings, name='deposit_savings'),
+    path('edit-savings-goal/<int:goal_id>/', views.edit_savings_goal, name='edit_savings_goal'),
+    path('delete-savings-goal/<int:goal_id>/', views.delete_savings_goal, name='delete_savings_goal'),
     path('delete-profile-picture/', views.delete_profile_picture, name='delete_profile_picture'),
 ]
 

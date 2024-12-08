@@ -407,6 +407,31 @@ def save_savings_goal(request):
     return redirect('add-savings-goal')
 
 @login_required
+def edit_savings_goal(request, goal_id):
+        savings_goal = get_object_or_404(SavingsGoal, id=goal_id, user=request.user)
+
+        if request.method == 'POST':
+            form = SavingsGoalForm(request.POST, instance=savings_goal)
+            if form.is_valid():
+                form.save()
+                return redirect('savings_dashboard')  # Redirect after saving
+        else:
+            form = SavingsGoalForm(instance=savings_goal)
+
+        return render(request, 'edit_savings_goal.html', {'form': form})
+
+
+@login_required
+def delete_savings_goal(request, goal_id):
+        savings_goal = get_object_or_404(SavingsGoal, id=goal_id, user=request.user)
+        if request.method == 'POST':
+            savings_goal.delete()
+            return redirect('savings_dashboard')  # Redirect after deletion
+
+        return redirect('savings_dashboard')  # Redirect if accessed without POST
+
+
+@login_required
 def transfer_savings(request):
     savings = Savings.objects.get(user=request.user)
     form = TransferForm()
@@ -437,3 +462,4 @@ def transfer_savings(request):
                 })
 
     return render(request, 'transfer.html', {'form': form})
+

@@ -14,16 +14,17 @@
     {% include 'sidebar.html' %}
 
     <div class="main-content">
-        <!-- Add Savings Goal Button (moved to the top) -->
+        <!-- Add Savings Goal Button -->
         <div class="add-goal-container">
             <a href="{% url 'add_savings_goal' %}" class="button add-goal-button">Add Savings Goal</a>
         </div>
 
         <div class="savings-container">
             <div class="savings-header">SAVINGS</div>
-            <div class="savings-balance">
+            <div class="savings-balance" role="region" aria-labelledby="balance">
                 <span>₱</span>
-                <span id="balance">{{ savings.balance|floatformat:2 }}</span> <!-- Use the balance property -->
+                <span id="balance">{{ savings.balance|floatformat:2 }}</span>
+                <img id="eye-icon" src="{% static 'openeye.png' %}" onclick="toggleBalance()" alt="Toggle visibility" style="cursor: pointer; width: 20px; margin-left: 10px;">
             </div>         
             <div class="savings-info">3% p.a for savings up to ₱5,000</div>
             <div class="button-container">
@@ -32,27 +33,47 @@
             </div>
         </div>
 
-            <!-- Display Savings Goals -->
+        <!-- Display Savings Goals in Separate Boxes -->
         <div class="goals-container">
-            <h3>Your Savings Goals</h3>
-            <ul>
-                {% for goal in savings_goals %}
-                    <li class="goal-item">
-                        <div class="goal-header">Goal Name:</div>
-                        <div class="goal-name">{{ goal.name }}</div>
-                        <div class="goal-header">Target Amount:</div>
-                        <div class="goal-target-amount">₱{{ goal.target_amount|floatformat:2 }}</div>
-                        {% if goal.description %}
-                            <div class="goal-header">Description:</div>
-                            <div class="goal-description">{{ goal.description }}</div>
-                        {% endif %}
-                    </li>
-                {% empty %}
-                    <p>You don't have any savings goals yet. Start by adding one!</p>
-                {% endfor %}
-            </ul>
+            <div class="goals-header-container">
+                <h3 class="goals-header">Your Savings Goals</h3>
+            </div>
+            {% if savings_goals %}
+                <div class="goals-grid">
+                    {% for goal in savings_goals %}
+                        <div class="goal-box">
+                            <div class="goal-item">
+                                <div class="goal-header">Goal Name:</div>
+                                <div class="goal-name">{{ goal.name }}</div>
+        
+                                <div class="goal-header">Target Amount:</div>
+                                <div class="goal-target-amount">₱{{ goal.target_amount|floatformat:2 }}</div>
+        
+                                {% if goal.description %}
+                                    <div class="goal-header">Description:</div>
+                                    <div class="goal-description">{{ goal.description }}</div>
+                                {% endif %}
+        
+                                <!-- Edit and Delete Buttons -->
+                                <div class="goal-actions-horizontal">
+                                    <a href="{% url 'edit_savings_goal' goal.id %}" class="button edit-button">Edit</a>
+                                    <form action="{% url 'delete_savings_goal' goal.id %}" method="POST" class="delete-form">
+                                        {% csrf_token %}
+                                        <button type="submit" class="button delete-button">Delete</button>
+                                    </form>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p class="no-goals-message">You don't have any savings goals yet. Start by adding one!</p>
+            {% endif %}
         </div>
-    </div>
+        
+        
+        
 
     <script>
         let isHidden = false;
