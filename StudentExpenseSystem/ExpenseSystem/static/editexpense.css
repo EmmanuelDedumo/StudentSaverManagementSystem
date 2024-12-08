@@ -1,4 +1,4 @@
-/* Base styles for the sidebar */
+/* Global styles */
 body {
     font-family: 'Poppins', sans-serif;
     background-color: #f4f4f4;
@@ -6,35 +6,42 @@ body {
     padding: 0;
 }
 
-
 /* Main dashboard styling */
 .main-dashboard {
     margin-left: 270px;
     padding: 40px;
+    min-height: 100vh;
 }
 
 /* Header styling */
 .header h1 {
     font-size: 36px;
     color: #333;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
 }
 
 /* Expense edit form */
 .expense-edit-form {
-    background-color: #fff;
-    border-radius: 8px;
+    background-color: #ffffff;
+    border-radius: 12px;
     padding: 30px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     width: 100%;
-    max-width: 800px; /* Limiting max width for a professional layout */
-    margin: 0 auto; /* Center the form */
+    max-width: 800px;
+    margin: 0 auto;
+    transition: box-shadow 0.3s ease-in-out;
+}
+
+.expense-edit-form:hover {
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
 }
 
 .expense-edit-form h2 {
-    font-size: 24px;
-    margin-bottom: 20px;
+    font-size: 28px;
     color: #333;
+    margin-bottom: 25px;
+    font-weight: 600;
+    text-align: center;
 }
 
 /* Form group styles */
@@ -42,10 +49,10 @@ body {
     margin-bottom: 20px;
 }
 
-/* Label styling */
 .form-group label {
     display: block;
-    font-weight: 600;
+    font-size: 16px;
+    font-weight: 500;
     color: #555;
     margin-bottom: 8px;
 }
@@ -54,39 +61,42 @@ body {
 .form-group input,
 .form-group select {
     width: 100%;
-    padding: 12px;
+    padding: 14px 20px;
     border: 1px solid #ddd;
-    border-radius: 6px;
+    border-radius: 8px;
     font-size: 16px;
     color: #333;
-    background-color: #f7f7f7;
-    box-sizing: border-box; /* Ensures padding is included in width */
+    background-color: #f9f9f9;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease-in-out, background-color 0.3s ease;
 }
 
 .form-group input:focus,
 .form-group select:focus {
     border-color: #5c6bc0;
     outline: none;
-    background-color: #fff;
+    background-color: #ffffff;
 }
 
 /* Button styling */
 .btn-submit {
     background-color: #5c6bc0;
     color: white;
-    padding: 12px 20px;
+    padding: 14px 30px;
     border: none;
-    border-radius: 6px;
+    border-radius: 8px;
     font-size: 16px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
     width: 100%;
-    max-width: 200px; /* Limiting button width */
-    margin-top: 20px; /* Add some space at the top */
+    max-width: 250px;
+    margin: 20px auto 0;
+    display: block;
+    transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .btn-submit:hover {
     background-color: #4e5a94;
+    transform: translateY(-2px);
 }
 
 /* Box for background */
@@ -114,7 +124,12 @@ body {
         padding: 20px;
     }
 
+    .form-group input,
+    .form-group select {
+        padding: 12px 15px;
+    }
+
     .btn-submit {
-        padding: 10px 15px;
+        padding: 12px 20px;
     }
 }

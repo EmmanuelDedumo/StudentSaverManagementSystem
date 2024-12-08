@@ -74,6 +74,17 @@ body {
     background-color: #2980b9; /* Darker shade on hover */
 }
 
+.btn-manage {
+    background-color: #2ecc71; /* Green button color for secondary */
+    color: white;
+    margin-top: 20px;
+    text-decoration: none; /* Remove underline from the link */
+}
+
+.btn-manage:hover {
+    background-color: #27ae60; /* Darker green on hover */
+}
+
 .alert {
     background-color: #4CAF50; /* Green background */
     color: white;
