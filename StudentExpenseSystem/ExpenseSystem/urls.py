@@ -26,6 +26,8 @@ urlpatterns = [
     path('delete-savings-goal/<int:goal_id>/', views.delete_savings_goal, name='delete_savings_goal'),
     path('goal/<int:goal_id>/delete/', views.delete_savings_goal, name='delete_savings_goal'),
     path('transfer/', views.transfer_savings, name='transfer_savings'),
+    path('forgot-password/', views.forgot_password, name='forgot_password'),
+    path('reset-password/<int:user_id>/', views.reset_password, name='reset_password'),
 
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

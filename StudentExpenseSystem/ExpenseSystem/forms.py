@@ -43,3 +43,10 @@ class TransferForm(forms.Form):
     recipient_name = forms.CharField(max_length=255, label="Recipient Name")
     amount = forms.FloatField(min_value=0.01, label="Transfer Amount")
     notes = forms.CharField(widget=forms.Textarea, required=False, label="Notes")
+
+class ForgotPasswordForm(forms.Form):
+    username = forms.CharField(max_length=100, label="Username")
+
+class ResetPasswordForm(forms.Form):
+    new_password = forms.CharField(widget=forms.PasswordInput, label="New Password")
+    confirm_password = forms.CharField(widget=forms.PasswordInput, label="Confirm Password")

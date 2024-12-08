@@ -28,12 +28,44 @@ import logging
 from django.core.files.storage import FileSystemStorage
 from django.http import JsonResponse
 from django.core.files.storage import default_storage
-from .forms import SavingsGoalForm, TransferForm
+from .forms import SavingsGoalForm, TransferForm, ForgotPasswordForm, ResetPasswordForm
 from .models import SavingsGoal
 
 
 
+def forgot_password(request):
+    if request.method == 'POST':
+        form = ForgotPasswordForm(request.POST)
+        if form.is_valid():
+            username = form.cleaned_data['username']
+            try:
+                user = User.objects.get(username=username)
+                # Username exists, redirect to reset password page
+                return redirect('reset_password', user_id=user.id)
+            except User.DoesNotExist:
+                messages.error(request, "Username does not exist.")
+    else:
+        form = ForgotPasswordForm()
+    return render(request, 'forgot_password.html', {'form': form})
 
+
+def reset_password(request, user_id):
+    user = User.objects.get(id=user_id)
+    if request.method == 'POST':
+        form = ResetPasswordForm(request.POST)
+        if form.is_valid():
+            new_password = form.cleaned_data['new_password']
+            confirm_password = form.cleaned_data['confirm_password']
+            if new_password == confirm_password:
+                user.set_password(new_password)  # Set the new password
+                user.save()
+                messages.success(request, "Password reset successfully!")
+                return redirect('login')
+            else:
+                messages.error(request, "Passwords do not match.")
+    else:
+        form = ResetPasswordForm()
+    return render(request, 'reset_password.html', {'form': form})
 
 
 
