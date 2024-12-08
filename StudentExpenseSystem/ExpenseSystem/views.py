@@ -500,7 +500,7 @@ def transfer_savings(request):
 
                 if amount < goal.target_amount:
                     return render(request, 'transfer_savings.html', {
-                        'error': 'Insufficient funds for transfer. The amount must meet the target amount.',
+                        'error': 'Insufficient funds.',
                         'form': form,
                         'savings_goals': SavingsGoal.objects.filter(user=request.user, completed=False)
                     })
