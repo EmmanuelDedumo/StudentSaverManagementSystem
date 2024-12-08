@@ -28,8 +28,13 @@ import logging
 from django.core.files.storage import FileSystemStorage
 from django.http import JsonResponse
 from django.core.files.storage import default_storage
-from .forms import SavingsGoalForm, TransferForm, ForgotPasswordForm, ResetPasswordForm
+from .forms import SavingsGoalForm, ForgotPasswordForm, ResetPasswordForm
 from .models import SavingsGoal
+from decimal import Decimal
+from django.http import HttpResponse
+from .forms import TransferForm  # Assuming you have a form for transferring funds
+from django.db import transaction
+from django import forms
 
 
 
@@ -347,17 +352,19 @@ def delete_profile_picture(request):
         return JsonResponse({"success": True})
     return JsonResponse({"error": "Invalid request method"}, status=400)
 
+
+
+@login_required
 def savings_dashboard(request):
-    # Retrieve or create the savings object for the current user
+    # Get or create the user's savings object
     savings, created = Savings.objects.get_or_create(
         user=request.user,
         defaults={'total_income': 0.0, 'total_expense': 0.0, 'current_savings': 0.0}
     )
-
-    # Retrieve the user's savings goals
     savings_goals = SavingsGoal.objects.filter(user=request.user)
 
     return render(request, 'savings.html', {'savings': savings, 'savings_goals': savings_goals})
+
 
 
 
@@ -401,6 +408,8 @@ def deposit_savings(request):
     return render(request, 'deposit_savings.html', {'savings': savings})  # Render deposit page
 
 
+
+
 @login_required
 def add_savings_goal(request):
     if request.method == 'POST':
@@ -422,20 +431,33 @@ def save_savings_goal(request):
         target_amount = request.POST.get('target_amount')
         description = request.POST.get('description')
 
-        # Save data to the database
-        savings_goal = SavingsGoal(
-            name=name,  # Use 'name' instead of 'goal_name'
-            target_amount=target_amount,
-            description=description,
-            user=request.user  # Link goal to the logged-in user
-        )
-        savings_goal.save()
+        # Check if a goal is being updated or created
+        goal_id = request.POST.get('goal_id')  # Assuming 'goal_id' is included in the form
+
+        if goal_id:
+            # Retrieve the existing goal and update it
+            savings_goal = SavingsGoal.objects.get(id=goal_id)
+            savings_goal.name = name
+            savings_goal.target_amount = target_amount
+            savings_goal.description = description
+            # Do not modify the 'completed' field unless specified
+            savings_goal.save()
+        else:
+            # Create a new savings goal
+            savings_goal = SavingsGoal(
+                name=name,
+                target_amount=target_amount,
+                description=description,
+                user=request.user
+            )
+            savings_goal.save()
 
         # Redirect to the savings dashboard after saving
         return redirect('savings_dashboard')
 
     # Redirect back to the form if the request is not POST
     return redirect('add-savings-goal')
+
 
 @login_required
 def edit_savings_goal(request, goal_id):
@@ -448,8 +470,10 @@ def edit_savings_goal(request, goal_id):
             return redirect('savings_dashboard')  # Redirect after saving
     else:
         form = SavingsGoalForm(instance=savings_goal)
+        form.fields['current_amount'].widget = forms.HiddenInput()  # Hide the field
 
     return render(request, 'edit_savings_goal.html', {'form': form, 'goal': savings_goal})
+
 
 
 @login_required
@@ -461,37 +485,57 @@ def delete_savings_goal(request, goal_id):
 
     return redirect('savings_dashboard')  # Redirect if accessed without POST
 
-
-
 @login_required
 def transfer_savings(request):
-    savings = Savings.objects.get(user=request.user)
-    form = TransferForm()
-
     if request.method == 'POST':
         form = TransferForm(request.POST)
         if form.is_valid():
-            recipient_name = form.cleaned_data['recipient_name']
             amount = form.cleaned_data['amount']
-            notes = form.cleaned_data['notes']
+            amount = Decimal(amount)
 
-            # Ensure the user has enough savings to make the transfer
-            if savings.balance >= amount:  # Use 'balance' property to check if enough funds are available
-                # Deduct the transfer amount from the total_expense
-                savings.total_expense += amount
-                savings.save()  # Save the updated savings
+            goal_id = form.cleaned_data['goal_id']
 
-                # Optionally, you could log the transfer details to a Transfer model (not shown here)
-                # Transfer.objects.create(user=request.user, recipient_name=recipient_name, amount=amount, notes=notes)
+            try:
+                savings = Savings.objects.get(user=request.user)
+                current_savings = Decimal(savings.current_savings)
 
-                # Redirect back to the savings dashboard
+                if current_savings < amount:
+                    return render(request, 'transfer_savings.html', {
+                        'error': 'Insufficient funds',
+                        'form': form,
+                        'savings_goals': SavingsGoal.objects.filter(user=request.user, completed=False)
+                    })
+
+                with transaction.atomic():
+                    goal = get_object_or_404(SavingsGoal, id=goal_id, user=request.user)
+                    goal.current_amount += amount  # Update current amount of the goal
+                    if goal.current_amount >= goal.target_amount:
+                        goal.completed = True
+                    goal.save()
+
+                    savings.current_savings = current_savings - amount  # Deduct amount from current savings
+                    savings.save()
+
                 return redirect('savings_dashboard')
-            else:
-                # If there are insufficient funds, show an error
-                return render(request, 'transfer.html', {
+
+            except Savings.DoesNotExist:
+                return render(request, 'transfer_savings.html', {
+                    'error': 'User savings data not found',
                     'form': form,
-                    'error': "Insufficient savings for transfer."
+                    'savings_goals': SavingsGoal.objects.filter(user=request.user, completed=False)
+                })
+            except SavingsGoal.DoesNotExist:
+                return render(request, 'transfer_savings.html', {
+                    'error': 'Savings goal not found',
+                    'form': form,
+                    'savings_goals': SavingsGoal.objects.filter(user=request.user, completed=False)
                 })
 
-    return render(request, 'transfer.html', {'form': form})
+    else:
+        form = TransferForm()
 
+    savings_goals = SavingsGoal.objects.filter(user=request.user, completed=False)
+    return render(request, 'transfer_savings.html', {
+        'form': form,
+        'savings_goals': savings_goals
+    })

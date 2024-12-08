@@ -52,12 +52,8 @@ class Profile(models.Model):
     
 class SavingsGoal(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    name = models.CharField(max_length=255)  # Field for goal name
-    target_amount = models.DecimalField(max_digits=10, decimal_places=2)  # Field for target amount
-    description = models.TextField(blank=True, null=True)  # Optional description
-
-    def __str__(self):
-        return self.name
-    
-    
-
+    name = models.CharField(max_length=200)
+    target_amount = models.DecimalField(max_digits=10, decimal_places=2)
+    current_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
+    completed = models.BooleanField(default=False)
+    description = models.TextField(blank=True, null=True) 

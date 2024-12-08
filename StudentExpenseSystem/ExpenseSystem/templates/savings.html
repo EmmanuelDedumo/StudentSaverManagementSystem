@@ -14,7 +14,6 @@
     {% include 'sidebar.html' %}
 
     <div class="main-content">
-        <!-- Add Savings Goal Button -->
         <div class="add-goal-container">
             <a href="{% url 'add_savings_goal' %}" class="button add-goal-button">Add Savings Goal</a>
         </div>
@@ -23,9 +22,9 @@
             <div class="savings-header">SAVINGS</div>
             <div class="savings-balance" role="region" aria-labelledby="balance">
                 <span>₱</span>
-                <span id="balance">{{ savings.balance|floatformat:2 }}</span>
+                <span id="balance">{{ savings.current_savings|floatformat:2 }}</span>
                 <img id="eye-icon" src="{% static 'openeye.png' %}" onclick="toggleBalance()" alt="Toggle visibility" style="cursor: pointer; width: 20px; margin-left: 10px;">
-            </div>         
+            </div>
             <div class="savings-info">3% p.a for savings up to ₱5,000</div>
             <div class="button-container">
                 <a href="{% url 'deposit_savings' %}" class="button">Deposit</a>
@@ -33,61 +32,67 @@
             </div>
         </div>
 
-        <!-- Display Savings Goals in Separate Boxes -->
+        {% block content %}
         <div class="goals-container">
             <div class="goals-header-container">
                 <h3 class="goals-header">Your Savings Goals</h3>
             </div>
             {% if savings_goals %}
-    <div class="goals-grid">
-                {% for goal in savings_goals %}
-                    <div class="goal-box">
-                        <div class="goal-item">
-                            <div class="goal-header">Goal Name:</div>
-                            <div class="goal-name">{{ goal.name }}</div>
-
-                            <div class="goal-header">Target Amount:</div>
-                            <div class="goal-target-amount">₱{{ goal.target_amount|floatformat:2 }}</div>
-
-                            {% if goal.description %}
-                                <div class="goal-header">Description:</div>
-                                <div class="goal-description">{{ goal.description }}</div>
-                            {% endif %}
-
-                            <!-- Manage Savings Button -->
-                            <div class="goal-actions">
-                                <a href="{% url 'edit_savings_goal' goal.id %}" class="button manage-button">Manage Savings</a>
+                <div class="goals-grid">
+                    {% for goal in savings_goals %}
+                        <div class="goal-box">
+                            <div class="goal-item">
+                                <div class="goal-header">Goal Name:</div>
+                                <div class="goal-name">{{ goal.name }}</div>
+        
+                                <div class="goal-header">Target Amount:</div>
+                                <div class="goal-target-amount">₱{{ goal.target_amount|floatformat:2 }}</div>
+        
+                                <div class="goal-actions">
+                                    <a href="{% url 'edit_savings_goal' goal.id %}" class="button manage-button">Manage Savings</a>
+                                    {% if goal.completed %}
+                                        <p class="goal-complete-message" style="color: green; margin-top: 10px;">Goal complete!</p>
+                                    {% endif %}
+                                </div>
                             </div>
                         </div>
-                    </div>
-                {% endfor %}
-            </div>
-        {% else %}
-            <p class="no-goals-message">You don't have any savings goals yet. Start by adding one!</p>
-        {% endif %}
-
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p class="no-goals-message">You don't have any savings goals yet. Start by adding one!</p>
+            {% endif %}
         </div>
         
-        
-        
+        {% endblock %}
+    </div>
 
     <script>
         let isHidden = false;
-        let actualBalance = "{{ savings.current_savings|floatformat:2 }}";  // Actual balance from Django template
+        let actualBalance = "{{ savings.current_savings|floatformat:2 }}";
 
         function toggleBalance() {
             const balanceElement = document.getElementById('balance');
             const eyeIcon = document.getElementById('eye-icon');
 
             if (isHidden) {
-                balanceElement.textContent = actualBalance; // Show actual balance
-                eyeIcon.src = "{% static 'openeye.png' %}"; // Eye open icon
+                balanceElement.textContent = actualBalance;
+                eyeIcon.src = "{% static 'openeye.png' %}";
                 isHidden = false;
             } else {
-                balanceElement.textContent = "•".repeat(actualBalance.length); // Hide balance with dots
-                eyeIcon.src = "{% static 'openhide.png' %}"; // Eye hide icon
+                balanceElement.textContent = "•".repeat(actualBalance.length);
+                eyeIcon.src = "{% static 'openhide.png' %}";
                 isHidden = true;
             }
+        }
+
+        function refreshBalance() {
+            fetch('/get-savings-balance')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('balance').textContent = '₱' + data.balance;
+                    actualBalance = data.balance;
+                })
+                .catch(error => console.error('Error:', error));
         }
     </script>
 </body>

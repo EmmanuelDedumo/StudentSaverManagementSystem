@@ -37,12 +37,11 @@ class DepositForm(forms.Form):
 class SavingsGoalForm(forms.ModelForm):
     class Meta:
         model = SavingsGoal
-        fields = ['name', 'target_amount', 'description']
+        fields = ['name', 'target_amount', 'current_amount', 'completed']
 
 class TransferForm(forms.Form):
-    recipient_name = forms.CharField(max_length=255, label="Recipient Name")
-    amount = forms.FloatField(min_value=0.01, label="Transfer Amount")
-    notes = forms.CharField(widget=forms.Textarea, required=False, label="Notes")
+    goal_id = forms.IntegerField()  # This field expects an integer ID
+    amount = forms.DecimalField(max_digits=10, decimal_places=2)
 
 class ForgotPasswordForm(forms.Form):
     username = forms.CharField(max_length=100, label="Username")

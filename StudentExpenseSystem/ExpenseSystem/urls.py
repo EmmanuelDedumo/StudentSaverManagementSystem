@@ -25,10 +25,9 @@ urlpatterns = [
     path('edit-savings-goal/<int:goal_id>/', views.edit_savings_goal, name='edit_savings_goal'),
     path('delete-savings-goal/<int:goal_id>/', views.delete_savings_goal, name='delete_savings_goal'),
     path('goal/<int:goal_id>/delete/', views.delete_savings_goal, name='delete_savings_goal'),
-    path('transfer/', views.transfer_savings, name='transfer_savings'),
     path('forgot-password/', views.forgot_password, name='forgot_password'),
     path('reset-password/<int:user_id>/', views.reset_password, name='reset_password'),
-
+    path('transfer-savings/', views.transfer_savings, name='transfer_savings'),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

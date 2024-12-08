@@ -1,0 +1,52 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transfer to Savings Goal</title>
+    <link rel="stylesheet" href="{% static 'transfer_savings.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    {% include 'navbar.html' %}
+    {% include 'sidebar.html' %}
+
+    <div class="main-content">
+        <div class="transfer-container">
+            <h1>Transfer to Savings Goal</h1>
+            <div class="transfer-form-container">
+                {% if error %}
+                    <p class="error-message">{{ error }}</p>
+                {% endif %}
+                <form method="POST" class="transfer-form">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="transfer-amount">Amount to Transfer (₱):</label>
+                        <input type="number" name="amount" id="transfer-amount" step="0.01" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="goal">Select Savings Goal:</label>
+                        <select name="goal_id" id="goal" required>
+                            {% for goal in savings_goals %}
+                                <option value="{{ goal.id }}">
+                                    {{ goal.name }} (Target: ₱{{ goal.target_amount|floatformat:2 }})
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="button-container">
+                        <button type="submit" class="action-button">
+                            <span>Transfer</span>
+                        </button>
+                        <a href="{% url 'savings_dashboard' %}" class="cancel-button">
+                            <span>Cancel</span>
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

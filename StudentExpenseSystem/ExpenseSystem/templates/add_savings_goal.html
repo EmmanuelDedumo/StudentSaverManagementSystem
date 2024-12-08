@@ -25,10 +25,6 @@
                     <label for="id_target_amount">Target Amount (₱)</label>
                     {{ form.target_amount }}
                 </div>
-                <div class="form-group">
-                    <label for="id_description">Description (Optional)</label>
-                    {{ form.description }}
-                </div>
                 <div class="button-container">
                     <button type="submit" class="button">Save Goal</button>
                     <a href="{% url 'savings_dashboard' %}" class="button cancel-button">Cancel</a>
