@@ -486,29 +486,41 @@ def transfer_savings(request):
         form = TransferForm(request.POST)
         if form.is_valid():
             amount = form.cleaned_data['amount']
-            amount = Decimal(amount)
+            amount = Decimal(amount)  # Ensure amount is a Decimal
 
             goal_id = form.cleaned_data['goal_id']
 
             try:
+                # Get the savings data for the current user and ensure it's a Decimal
                 savings = Savings.objects.get(user=request.user)
-                current_savings = Decimal(savings.current_savings)
+                current_savings = Decimal(savings.current_savings)  # Convert current_savings to Decimal
+
+                # Get the savings goal and check conditions
+                goal = get_object_or_404(SavingsGoal, id=goal_id, user=request.user)
+
+                if amount < goal.target_amount:
+                    return render(request, 'transfer_savings.html', {
+                        'error': 'Insufficient funds.',
+                        'form': form,
+                        'savings_goals': SavingsGoal.objects.filter(user=request.user, completed=False)
+                    })
 
                 if current_savings < amount:
                     return render(request, 'transfer_savings.html', {
-                        'error': 'Insufficient funds',
+                        'error': 'Insufficient funds in your savings.',
                         'form': form,
                         'savings_goals': SavingsGoal.objects.filter(user=request.user, completed=False)
                     })
 
                 with transaction.atomic():
-                    goal = get_object_or_404(SavingsGoal, id=goal_id, user=request.user)
-                    goal.current_amount += amount  # Update current amount of the goal
+                    # Update the savings goal
+                    goal.current_amount += amount
                     if goal.current_amount >= goal.target_amount:
                         goal.completed = True
                     goal.save()
 
-                    savings.current_savings = current_savings - amount  # Deduct amount from current savings
+                    # Deduct the amount from current savings
+                    savings.current_savings = current_savings - amount  # Ensure this is Decimal
                     savings.save()
 
                 return redirect('savings_dashboard')
@@ -534,6 +546,7 @@ def transfer_savings(request):
         'form': form,
         'savings_goals': savings_goals
     })
+
 
 @login_required
 def get_savings_balance(request):
