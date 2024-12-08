@@ -459,21 +459,31 @@ def save_savings_goal(request):
     return redirect('add-savings-goal')
 
 
+logger = logging.getLogger(__name__)
+
 @login_required
 def edit_savings_goal(request, goal_id):
+    # Retrieve the savings goal object or return a 404 if not found
     savings_goal = get_object_or_404(SavingsGoal, id=goal_id, user=request.user)
 
+    # Handle form submission when the request method is POST
     if request.method == 'POST':
         form = SavingsGoalForm(request.POST, instance=savings_goal)
         if form.is_valid():
-            form.save()
-            return redirect('savings_dashboard')  # Redirect after saving
+            form.save()  # Save the changes to the database
+            messages.success(request, "Savings goal updated successfully.")  # Optional: display a success message
+            return redirect('savings_dashboard')  # Redirect to the dashboard after saving
+        else:
+            # Optional: Log or display errors if the form is not valid
+            messages.error(request, "There were errors in your form. Please check and try again.")
+
+    # Handle GET request (display the form)
     else:
         form = SavingsGoalForm(instance=savings_goal)
-        form.fields['current_amount'].widget = forms.HiddenInput()  # Hide the field
+        form.fields['current_amount'].widget = forms.HiddenInput()  # Hide the 'current_amount' field if needed
 
+    # Render the form template
     return render(request, 'edit_savings_goal.html', {'form': form, 'goal': savings_goal})
-
 
 
 @login_required

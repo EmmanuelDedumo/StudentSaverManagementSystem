@@ -37,6 +37,7 @@ urlpatterns = [
     path('delete-savings-goal/<int:goal_id>/', views.delete_savings_goal, name='delete_savings_goal'),
     path('delete-profile-picture/', views.delete_profile_picture, name='delete_profile_picture'),
     path('goal/<int:goal_id>/delete/', views.delete_savings_goal, name='delete_savings_goal'),
+
 ]
 
 # Add media URL pattern to serve uploaded media during development

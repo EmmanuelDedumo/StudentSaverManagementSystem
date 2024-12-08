@@ -3,10 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Savings Goal</title>
+    <title>Manage Savings Goal</title>
     {% load static %}
     <link rel="stylesheet" href="{% static 'edit_savings_goal.css' %}">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
     {% include 'navbar.html' %}
@@ -14,28 +13,20 @@
 
     <div class="main-content">
         <div class="form-container">
-            <h2>Edit Savings Goal</h2>
-            <form method="POST">
+            <h2>Manage Savings Goal</h2>
+            <form method="POST" class="form-save">
                 {% csrf_token %}
-                <input type="hidden" name="goal_id" value="{{ goal.id }}">
-                <div class="form-group">
-                    {% for field in form %}
-                        {% if field.name != "current_amount" %}
-                            <div class="form-field">
-                                {{ field.label_tag }}
-                                {{ field }}
-                            </div>
-                        {% endif %}
-                    {% endfor %}
-                </div>
+                {{ form.as_p }}
                 <div class="button-container">
                     <button type="submit" class="button save-button">Save Changes</button>
-                    <form method="POST" action="{% url 'delete_savings_goal' goal.id %}" class="form-delete">
-                        {% csrf_token %}
-                        <button type="submit" class="button cancel-button">Delete Goal</button>
-                    </form>
                 </div>
             </form>
+            <div class="button-container">
+                <form method="POST" action="{% url 'delete_savings_goal' goal.id %}" class="form-delete">
+                    {% csrf_token %}
+                    <button type="submit" class="button delete-button">Delete Goal</button>
+                </form>
+            </div>
         </div>
     </div>
 </body>

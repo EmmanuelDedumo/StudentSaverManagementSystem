@@ -29,6 +29,7 @@ urlpatterns = [
     path('reset-password/<int:user_id>/', views.reset_password, name='reset_password'),
     path('transfer-savings/', views.transfer_savings, name='transfer_savings'),
 
+
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 if settings.DEBUG:
