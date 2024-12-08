@@ -296,6 +296,25 @@ def user_profile(request):
         'user': request.user
     })
 
+def save_profile_picture_from_url(user, image_url):
+    response = requests.get(image_url)
+    if response.status_code == 200:
+        # Extract the file name from the URL
+        file_name = image_url.split("/")[-1]
+        # Save the image to the user's profile
+        user.profile.profile_picture.save(file_name, ContentFile(response.content), save=True)
+
+
+@login_required
+def delete_profile_picture(request):
+    if request.method == "POST":
+        profile = request.user.profile  # Access the user's profile
+        profile.profile_picture.delete(save=False)  # Delete the current picture file
+        profile.profile_picture = None  # Reset to None
+        profile.save()  # Save the changes
+        return JsonResponse({"success": True})
+    return JsonResponse({"error": "Invalid request method"}, status=400)
+
 def savings_dashboard(request):
     # Retrieve or create the savings object for the current user
     savings, created = Savings.objects.get_or_create(
@@ -348,26 +367,6 @@ def deposit_savings(request):
             })
     
     return render(request, 'deposit_savings.html', {'savings': savings})  # Render deposit page
-
-
-def save_profile_picture_from_url(user, image_url):
-    response = requests.get(image_url)
-    if response.status_code == 200:
-        # Extract the file name from the URL
-        file_name = image_url.split("/")[-1]
-        # Save the image to the user's profile
-        user.profile.profile_picture.save(file_name, ContentFile(response.content), save=True)
-
-
-@login_required
-def delete_profile_picture(request):
-    if request.method == "POST":
-        profile = request.user.profile  # Access the user's profile
-        profile.profile_picture.delete(save=False)  # Delete the current picture file
-        profile.profile_picture = None  # Reset to None
-        profile.save()  # Save the changes
-        return JsonResponse({"success": True})
-    return JsonResponse({"error": "Invalid request method"}, status=400)
 
 
 @login_required

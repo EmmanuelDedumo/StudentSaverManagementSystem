@@ -9,7 +9,7 @@
         </div>
 
         <div class="action-container">
-            <div class="savings-container background-box">
+            <div class="savings-container">
                 <h2>Deposit to Savings</h2>
                 <form method="POST" class="savings-form">
                     {% csrf_token %}
@@ -18,8 +18,8 @@
                         <input type="number" name="amount" id="deposit-amount" step="0.01" required>
                     </div>
                     <input type="hidden" name="action" value="deposit">
-                    <button type="submit" class="action-button add-expenses">
-                        <p>Deposit</p>
+                    <button type="submit" class="action-button">
+                        <span>Deposit</span>
                     </button>
                 </form>
                 {% if success_message %}
@@ -31,99 +31,119 @@
 {% endblock %}
 
 <style>
-    /* General Styles */
-    body {
-        font-family: Poppins, sans-serif;
-        background-color: #f4f4f4;
-        margin: 0;
-        padding: 0;
-    }
+/* General Styles */
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f0f4f8; /* Light grayish-blue background */
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Full height of the viewport */
+}
 
-    .main-dashboard {
-        margin-left: 250px; /* Sidebar width */
-        padding: 20px;
-        background-color: #ecf0f1;
-    }
+.main-dashboard {
+    margin-left: 250px; /* Sidebar width */
+    padding: 30px;
+    background-color: #ffffff; /* White background */
+    border-radius: 12px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    flex-grow: 1; /* Allows the main content to grow */
+}
 
-    .header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        font-size: 24px;
-        font-weight: bold;
-        margin-bottom: 20px;
-    }
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 28px;
+    font-weight: 600;
+    color: #333;
+    border-bottom: 2px solid #e0e0e0;
+    padding-bottom: 15px;
+    margin-bottom: 25px;
+}
 
-    /* Savings Form */
-    .savings-container {
-        background-color: #ffffff;
-        border-radius: 10px;
-        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        padding: 20px;
-        max-width: 500px;
-        margin: 0 auto;
-        text-align: center;
-    }
+.savings-container {
+    background-color: #ffffff; /* White background for the form */
+    border-radius: 12px;
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    max-width: 500px;
+    margin: 0 auto;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
 
-    .savings-form {
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
-    }
+.savings-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
 
-    .form-group {
-        text-align: left;
-    }
+.form-group {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
 
-    label {
-        font-size: 14px;
-        color: #555;
-    }
+label {
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 5px;
+}
 
-    input[type="number"] {
-        width: 100%;
-        padding: 10px;
-        border-radius: 8px;
-        border: 1px solid #ddd;
-        font-size: 16px;
-        outline: none;
-    }
+input[type="number"] {
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    font-size: 16px;
+    outline: none;
+    transition: border-color 0.3s;
+}
 
-    input[type="number"]:focus {
-        border-color: #007bff;
-    }
+input[type="number"]:focus {
+    border-color: #007bff;
+}
 
-    /* Action Button */
-    .action-button {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        background-color: #ffffff;
-        padding: 10px;
-        border-radius: 20px;
-        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        text-align: center;
-        transition: background-color 0.3s ease;
-    }
+/* Action Button */
+.action-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #007bff; /* Blue background */
+    color: #fff;
+    padding: 12px 20px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 500;
+    transition: background-color 0.3s, transform 0.2s;
+}
 
-    .action-button:hover {
-        background-color: #f1f1f1;
-    }
+.action-button:hover {
+    background-color: #0056b3; /* Darker blue */
+    transform: translateY(-3px);
+}
 
-    .action-icon {
-        width: 50px;
-        height: 50px;
-    }
+.action-button:active {
+    background-color: #004085; /* Even darker blue */
+    transform: translateY(1px);
+}
 
-    .action-button p {
-        font-weight: bold;
-        margin-top: 10px;
-    }
+.action-button span {
+    display: block;
+}
 
-    .success-message {
-        margin-top: 20px;
-        color: #28a745;
-        font-size: 16px;
-    }
+/* Success Message */
+.success-message {
+    margin-top: 15px;
+    color: #28a745; /* Green color */
+    font-size: 16px;
+    font-weight: 500;
+}
+
 </style>
