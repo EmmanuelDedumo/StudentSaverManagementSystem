@@ -6,27 +6,30 @@
     <title>Manage Savings Goal</title>
     {% load static %}
     <link rel="stylesheet" href="{% static 'savings.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
     {% include 'navbar.html' %}
     {% include 'sidebar.html' %}
 
     <div class="main-content">
-        <h2>Manage Savings Goal</h2>
-        <form method="POST" class="form-save">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <div class="button-container">
-                <button type="submit" class="button save-button">Save Changes</button>
-            </div>
-        </form>
-        <div class="button-container">
-            <form method="POST" action="{% url 'delete_savings_goal' goal.id %}" class="form-delete">
+        <div class="savings-container">
+            <h2 class="savings-header">Manage Savings Goal</h2>
+            <form method="POST" class="form-save">
                 {% csrf_token %}
-                <button type="submit" class="button delete-button">Delete Goal</button>
+                {{ form.as_p }}
+                <div class="button-container">
+                    <button type="submit" class="button save-button">Save Changes</button>
+                    <a href="{% url 'savings_dashboard' %}" class="button cancel-button">Cancel</a>
+                </div>
             </form>
+            <div class="button-container">
+                <form method="POST" action="{% url 'delete_savings_goal' goal.id %}" class="form-delete">
+                    {% csrf_token %}
+                    <button type="submit" class="button delete-button">Delete Goal</button>
+                </form>
+            </div>
         </div>
     </div>
-    
 </body>
 </html>
