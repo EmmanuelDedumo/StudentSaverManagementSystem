@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Expense Report</title>
     {% load static %}
+    <link rel="icon" href="{% static 'LOGO.png' %}" type="image/png">
     <link rel="stylesheet" href="{% static 'expensereport.css' %}">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
@@ -20,10 +21,10 @@
         <div class="report-filters">
             <form method="GET" action="{% url 'expense_report' %}">
                 <select name="filter" onchange="this.form.submit()">
-                    <option value="today" {% if filter == 'today' %}selected{% endif %}>Today</option>
-                    <option value="weekly" {% if filter == 'weekly' %}selected{% endif %}>This Week</option>
-                    <option value="monthly" {% if filter == 'monthly' %}selected{% endif %}>This Month</option>
-                    <option value="yearly" {% if filter == 'yearly' %}selected{% endif %}>This Year</option>
+                    <option value="Today" {% if filter == 'today' %}selected{% endif %}>Today</option>
+                    <option value="Weekly" {% if filter == 'weekly' %}selected{% endif %}>This Week</option>
+                    <option value="Monthly" {% if filter == 'monthly' %}selected{% endif %}>This Month</option>
+                    <option value="Yearly" {% if filter == 'yearly' %}selected{% endif %}>This Year</option>
                 </select>
             </form>
         </div>
